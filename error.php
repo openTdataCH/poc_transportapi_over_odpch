@@ -43,9 +43,14 @@ function customError($errno,$errstr,$errfile,$errline,$errorctxt){
 * @param $var - The content to dump into the file
 * @returns nothing
 */
-function var_dump_file($filename, $var){
+function var_dump_file($filename, $var, $append=false){
   $message=var_export($var, true);
-  $handle = fopen($filename, "w");
+  if ($append) {
+	  $handle = fopen($filename, "a");
+  }
+  else {
+	  $handle = fopen($filename, "w");
+  }
   fwrite($handle, $message);
   fclose($handle);
 }

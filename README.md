@@ -14,15 +14,21 @@ The ODPCH documentation can be found here (in German):
 The documentation here only points out the differences to the original TransportAPI implementation.
  
 ### Rate Limiting ###
-The current implementation uses a standard API-key and is therefore limited. If you want more capacity. Download the source and get your own key.
+The current implementation uses a standard API-key and is therefore limited. It also is only a PoC implementation. If you want more capacity, download the source, install it yourself, run it and get your own key.
 
 ### Resources ###
 
 #### /locations ####
 
-> http://transport.actinvoice.com/locations
+> http://transport.gnostx.com/locations
 
 Request Parameters:
+
+- query: specifies the location name to search for (e.g. "Basel" or "8507000")
+- x: Latitude (e.g. 47.476001)
+- y: Longitude (e.g. 8.306130)
+
+Important:
 
 - type: not supported
 - transportations: not supported
@@ -30,12 +36,14 @@ Request Parameters:
 
 Response Parameters:
 
+- list of locations 
 - Stations don't support score. Distance is only supported, when searched by geo coordinates.
+- x,y search returns all in 0.03 distance
 
 ##### Example requests #####
     
-    GET http://transport.actinvoice.com/locations?query=Basel
-    GET http://transport.actinvoice.com/locations?x=8.061&y=47.451
+    GET http://transport.gnostx.com/locations?query=Basel
+    GET http://transport.gnostx.com/locations?x=8.061&y=47.451
 
 ##### Example response #####
 
@@ -210,9 +218,18 @@ Response Parameters:
     }
 #### /connections ####
 
-    http://transport.actinvoice.com/connections
+    http://transport.gnostx.com/connections
 
 Request Parameters:
+
+- from (required): Specifies the departure location of the connection (e.g. "Lausanne")
+- to (required): Specifies the arrival location of the connection (e.g. "Genève")
+- date: Date of the connection, in the format YYYY-MM-DD (e.g. 2017-01-06)
+- time: Time of the connection, in the format hh:mm (e.g. 17:30)
+- isArrivalTime: defaults to 0, if set to 1 the passed date and time is the arrival time (e.g. 1)
+- limit: 1-6. Specifies the number of connections to return. If several connections depart at the same time they are counted as 1 according to transportapi specification, but not here (e.g. 1)
+
+Important:
 
 - via: not supported
 - transportations: not supported
@@ -225,13 +242,14 @@ Request Parameters:
 
 Response Parameters:
 
+- Connections a list of connections
 - Connections don't support duration, products, capacity1st, capacity2nd, sections
 
 ##### Example request #####
 
-    GET http://transport.actinvoice.com/connections?from=8507000&to=8503000
+    GET http://transport.gnostx.com/connections?from=8507000&to=8503000
 
-    GET http://transport.actinvoice.com/connections?from=8507000&to=8503000&date=2016-12-12&time=20:00&isArrivalTime=1&limit=8
+    GET http://transport.gnostx.com/connections?from=8507000&to=8503000&date=2016-12-12&time=20:00&isArrivalTime=1&limit=8
         
 ##### Example response #####
 
@@ -404,9 +422,17 @@ Response Parameters:
 
 #### /stationboard ####
 
-    http://transport.actinvoice.com/stationboard
+    http://transport.gnostx.com/stationboard
     
 Request Parameters:
+
+- station (required): Specifies the location of whicht a stationboard should be returned (e.g. "Aarau" or "8507000")
+- id: The id of the station whose stationboard should be returned (e.g. 8503000).
+- limit: Number of departing connections to return (e.g. 15)
+- datetime: Date and time of departing connections, in the format YYYY-MM-DD hh:mm (e.g. 2016-12-23 18:30)
+- type: departure (default) or arrival (e.g. arrival)
+
+Important:
 
 - station: Be aware, that ODPCH does not use importance of station. Therefore you can get anything. E.g. Zürich will not get you Zürich HB.
 - transportations: not supported
@@ -418,11 +444,11 @@ Response Parameters:
 
 ##### Example request #####
 
-    GET http://transport.actinvoice.com/stationboard?id=8507000
-    GET http://transport.actinvoice.com/stationboard?station=Wankdorf
-    GET http://transport.actinvoice.com/stationboard?id=8503000&datetime=2016-12-12T22:00:00&type=arrival
-    GET http://transport.actinvoice.com/stationboard?id=8503000&datetime=2016-12-12T22:00:00&type=departure
-    GET http://transport.actinvoice.com/stationboard?id=8503000&datetime=2016-12-12T22:00:00&type=arrival&limit=3
+    GET http://transport.gnostx.com/stationboard?id=8507000
+    GET http://transport.gnostx.com/stationboard?station=Wankdorf
+    GET http://transport.gnostx.com/stationboard?id=8503000&datetime=2016-12-12T22:00:00&type=arrival
+    GET http://transport.gnostx.com/stationboard?id=8503000&datetime=2016-12-12T22:00:00&type=departure
+    GET http://transport.gnostx.com/stationboard?id=8503000&datetime=2016-12-12T22:00:00&type=arrival&limit=3
     
     
 ##### Example response #####
@@ -578,7 +604,7 @@ object not supported
 
 #### Section Object ####
 
-Object not supported
+This object not supported.
 
 #### Journey Object ####
 Minimalistic support for station board
@@ -589,4 +615,4 @@ Minimalistic support for station board
 
 ## Source ##
 
-https://github.com/openTdataCH/poc_transportapi_over_odpch
+[https://github.com/openTdataCH/poc_transportapi_over_odpch](https://github.com/openTdataCH/poc_transportapi_over_odpch) 
