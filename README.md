@@ -50,7 +50,7 @@ Response Parameters:
 
 ##### Example response #####
 
-    
+```
 	"stations": {
 		"600": {
 			"id": 8515456,
@@ -131,6 +131,7 @@ Response Parameters:
 			"info": "The location search by lat\/long is limited, since queries with sql and with filters did not work."
 		},
 	}
+```
 
 #### /connections ####
 
@@ -168,7 +169,7 @@ Response Parameters:
         
 ##### Example response #####
 
-{
+```
 	"connections": {
 		"results": {
 			"trip-context": {
@@ -791,7 +792,7 @@ Response Parameters:
 			]
 		}
 	}
-}
+```
 
 #### /stationboard ####
 
@@ -825,7 +826,7 @@ Response Parameters:
     
 ##### Example response #####
 
-    {
+```
 	"stationboard": {
 		"info": "Stationboard station location search contains more than one result. Number of results: 100. The first appearing station with the BPUIC \"8508183\" was taken, with the name \"Madiswil\". If you did not found your desired station, please search more specific like \"?station=Bern Wankdorf Bahnhof\".",
 		"results": [
@@ -1017,7 +1018,7 @@ Response Parameters:
 			},
 		]
 	}
-}
+```
 
 ### API Objects ###
 
