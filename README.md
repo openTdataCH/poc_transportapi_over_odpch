@@ -4,6 +4,8 @@ Swiss public transport API over ODPCH
 
 Matthias Günter, 2016
 
+Updated by Maki Mikkelson
+
 ## API Documentation ##
 
 The original documentation can be found here: [https://transport.opendata.ch/docs.html](https://transport.opendata.ch/docs.html)
@@ -25,11 +27,12 @@ The current implementation uses a standard API-key and is therefore limited. It 
 Request Parameters:
 
 - query: specifies the location name to search for (e.g. "Basel" or "8507000")
-- x: Latitude (e.g. 47.476001)
-- y: Longitude (e.g. 8.306130)
+- lat: Latitude (e.g. 47.476001)
+- long: Longitude (e.g. 8.306130)
 
 Important:
 
+- since it was not possible to implement sql or filter search, all possible results are queried with a limit of 4000 (the whole dienststelle_full. csv has 148555 entries). 4000 was the maximum results before there was a server timeout. Unfortunately quereis with lat/long aren't functioning properly now therefore.
 - type: not supported
 - transportations: not supported
 - limits: handles limits differently. Not according to time, but really n results.
@@ -38,184 +41,97 @@ Response Parameters:
 
 - list of locations 
 - Stations don't support score. Distance is only supported, when searched by geo coordinates.
-- x,y search returns all in 0.03 distance
+- lat, long search returns all in 0.09 distance
 
 ##### Example requests #####
     
     GET http://transport.gnostx.com/locations?query=Basel
-    GET http://transport.gnostx.com/locations?x=8.061&y=47.451
+    GET http://transport.gnostx.com/locations?lat=47.451&long=8.061
 
 ##### Example response #####
 
-    {
-	"stations": [
-		{
-			"id": "8500591",
-			"name": "Asp AG, Abzw.",
-			"score": null,
+    
+	"stations": {
+		"600": {
+			"id": 8515456,
+			"sloid": "ch:1:sloid:15456",
+			"name": "Neugut Ost bei DUE (Abzw)",
 			"coordinate": {
 				"type": "WGS84",
-				"x": "8.053752",
-				"y": "47.446092"
+				"latitude": 47.40445000022,
+				"longitude": 8.60479000204,
+				"IERS": 430.9
 			},
-			"distance": 970.32290672028
+			"distance": 5656947.737761683,
+			"info": "The location search by lat\/long is limited, since queries with sql and with filters did not work."
 		},
-		{
-			"id": "8500592",
-			"name": "K\u00fcttigen, Abzw. Giebel",
-			"score": null,
+		"1058": {
+			"id": 8503200,
+			"sloid": "ch:1:sloid:3200",
+			"name": "Kilchberg",
 			"coordinate": {
 				"type": "WGS84",
-				"x": "8.052109",
-				"y": "47.421977"
+				"latitude": 47.32443156963,
+				"longitude": 8.54801640459,
+				"IERS": 424.1
 			},
-			"distance": 3344.8039043624
+			"distance": 5655013.104207889,
+			"info": "The location search by lat\/long is limited, since queries with sql and with filters did not work."
 		},
-		{
-			"id": "8500687",
-			"name": "K\u00fcttigen, Benken-Klus",
-			"score": null,
+		"1117": {
+			"id": 8591236,
+			"sloid": "ch:1:sloid:91236",
+			"name": "Z\u00fcrich, Krematorium Sihlfeld",
 			"coordinate": {
 				"type": "WGS84",
-				"x": "8.037596",
-				"y": "47.423079"
+				"latitude": 47.37780610449,
+				"longitude": 8.50787199573,
+				"IERS": 412
 			},
-			"distance": 4027.7193214543
+			"distance": 5660995.515985221,
+			"info": "The location search by lat\/long is limited, since queries with sql and with filters did not work."
 		},
-		{
-			"id": "8500976",
-			"name": "Zeihen, Hohb\u00e4chli",
-			"score": null,
+		"1118": {
+			"id": 8519512,
+			"sloid": "ch:1:sloid:19512",
+			"name": "Z\u00fcrich, Letzigrund (Vzw)",
 			"coordinate": {
 				"type": "WGS84",
-				"x": "8.085483",
-				"y": "47.476850"
+				"latitude": 47.38096082849,
+				"longitude": 8.50425362759,
+				"IERS": 410
 			},
-			"distance": 3938.342182614
+			"distance": 5661424.014328691,
+			"info": "The location search by lat\/long is limited, since queries with sql and with filters did not work."
 		},
-		{
-			"id": "8500977",
-			"name": "Densb\u00fcren, Gemeindehaus",
-			"score": null,
+		"1119": {
+			"id": 8519512,
+			"sloid": "ch:1:sloid:19512",
+			"name": "Z\u00fcrich, Letzigrund (Vzw)",
 			"coordinate": {
 				"type": "WGS84",
-				"x": "8.051929",
-				"y": "47.455851"
+				"latitude": 47.38096082849,
+				"longitude": 8.50425362759,
+				"IERS": 410
 			},
-			"distance": 1141.3227807244
+			"distance": 5661424.014328691,
+			"info": "The location search by lat\/long is limited, since queries with sql and with filters did not work."
 		},
-		{
-			"id": "8500978",
-			"name": "Herznach, Post",
-			"score": null,
+		"1298": {
+			"id": 8516737,
+			"sloid": "ch:1:sloid:16737",
+			"name": "Z\u00fcrich Weinbergtunnel",
 			"coordinate": {
 				"type": "WGS84",
-				"x": "8.050542",
-				"y": "47.474782"
+				"latitude": 47.38993785184,
+				"longitude": 8.53786514796,
+				"IERS": 451
 			},
-			"distance": 2864.9608612133
+			"distance": 5660000.742642435,
+			"info": "The location search by lat\/long is limited, since queries with sql and with filters did not work."
 		},
-		{
-			"id": "8502682",
-			"name": "K\u00fcttigen, Grossmatt",
-			"score": null,
-			"coordinate": {
-				"type": "WGS84",
-				"x": "8.053026",
-				"y": "47.429141"
-			},
-			"distance": 2564.7590330315
-		},
-		{
-			"id": "8502687",
-			"name": "K\u00fcttigen, Fischbach",
-			"score": null,
-			"coordinate": {
-				"type": "WGS84",
-				"x": "8.034624",
-				"y": "47.429930"
-			},
-			"distance": 3739.4194545716
-		},
-		{
-			"id": "8502893",
-			"name": "Staffelegg, Passh\u00f6he",
-			"score": null,
-			"coordinate": {
-				"type": "WGS84",
-				"x": "8.060317",
-				"y": "47.433779"
-			},
-			"distance": 1897.4895337732
-		},
-		{
-			"id": "8572391",
-			"name": "Densb\u00fcren, Ausserdorf",
-			"score": null,
-			"coordinate": {
-				"type": "WGS84",
-				"x": "8.053155",
-				"y": "47.452939"
-			},
-			"distance": 898.06606721082
-		},
-		{
-			"id": "8572392",
-			"name": "Densb\u00fcren, Breite",
-			"score": null,
-			"coordinate": {
-				"type": "WGS84",
-				"x": "8.048531",
-				"y": "47.462597"
-			},
-			"distance": 1884.830603901
-		},
-		{
-			"id": "8572393",
-			"name": "Herznach, Oberherznach",
-			"score": null,
-			"coordinate": {
-				"type": "WGS84",
-				"x": "8.053897",
-				"y": "47.470151"
-			},
-			"distance": 2251.5472066039
-		},
-		{
-			"id": "8572394",
-			"name": "Ueken, Zeihen Abzw.",
-			"score": null,
-			"coordinate": {
-				"type": "WGS84",
-				"x": "8.052465",
-				"y": "47.480519"
-			},
-			"distance": 3385.7005831066
-		},
-		{
-			"id": "8572459",
-			"name": "Zeihen, Stauftel",
-			"score": null,
-			"coordinate": {
-				"type": "WGS84",
-				"x": "8.088275",
-				"y": "47.478444"
-			},
-			"distance": 4280.9884368639
-		},
-		{
-			"id": "8572460",
-			"name": "Zeihen, Dorf",
-			"score": null,
-			"coordinate": {
-				"type": "WGS84",
-				"x": "8.083445",
-				"y": "47.476232"
-			},
-			"distance": 3734.3591001069
-		}
-	]
-    }
+	}
+
 #### /connections ####
 
     http://transport.gnostx.com/connections
@@ -248,177 +164,634 @@ Response Parameters:
 ##### Example request #####
 
     GET http://transport.gnostx.com/connections?from=8507000&to=8503000
-
     GET http://transport.gnostx.com/connections?from=8507000&to=8503000&date=2016-12-12&time=20:00&isArrivalTime=1&limit=8
         
 ##### Example response #####
 
-    {
-	"connections": [
-		{
-			"from": {
-				"station": {
-					"id": "8507000",
-					"name": "Bern$<1>$Berna$<4>$Berne (CH)$<4>$BN$<3>",
-					"score": null,
-					"coordinate": {
-						"type": "WGS84",
-						"x": "7.439118",
-						"y": "46.948825"
-					},
-					"distance": null
-				},
-				"arrival": null,
-				"departure": "2016-12-31T14:34:00Z",
-				"platform": null,
-				"prognosis": {
-					"platform": null,
-					"departure": "2016-12-31T14:36:00Z",
-					"arrival": null,
-					"capacity1st": "-1",
-					"capacity2nd": "-1"
+{
+	"connections": {
+		"results": {
+			"trip-context": {
+				"situations": {
+					"pt-situations": [
+						{
+							"creation-time": "2023-04-19T17:38:21Z",
+							"version": "-1",
+							"source": [
+								{
+									"source-type": "other"
+								}
+							],
+							"unknown-reason": "unknown",
+							"priority": "-1",
+							"summary": "Aussteigeseite: Links"
+						},
+						{
+							"creation-time": "2023-04-19T17:38:21Z",
+							"version": "-1",
+							"source": {
+								"1": {
+									"source-type": "other"
+								}
+							},
+							"unknown-reason": "unknown",
+							"priority": "-1",
+							"summary": "Aussteigeseite: Links"
+						},
+						{
+							"creation-time": "2023-04-19T17:38:21Z",
+							"version": "-1",
+							"source": {
+								"2": {
+									"source-type": "other"
+								}
+							},
+							"unknown-reason": "unknown",
+							"priority": "-1",
+							"summary": "Aussteigeseite: Rechts"
+						},
+						{
+							"creation-time": "2023-04-19T17:38:21Z",
+							"version": "-1",
+							"source": {
+								"3": {
+									"source-type": "other"
+								}
+							},
+							"unknown-reason": "unknown",
+							"priority": "-1",
+							"summary": "Aussteigeseite: Links"
+						},
+						{
+							"creation-time": "2023-04-19T17:38:21Z",
+							"version": "-1",
+							"source": {
+								"4": {
+									"source-type": "other"
+								}
+							},
+							"unknown-reason": "unknown",
+							"priority": "-1",
+							"summary": "Aussteigeseite: Links"
+						},
+						{
+							"creation-time": "2023-04-19T17:38:21Z",
+							"version": "-1",
+							"source": {
+								"5": {
+									"source-type": "other"
+								}
+							},
+							"unknown-reason": "unknown",
+							"priority": "-1",
+							"summary": "Aussteigeseite: Links"
+						},
+						{
+							"creation-time": "2023-04-19T17:38:21Z",
+							"version": "-1",
+							"source": {
+								"6": {
+									"source-type": "other"
+								}
+							},
+							"unknown-reason": "unknown",
+							"priority": "-1",
+							"summary": "Aussteigeseite: Rechts"
+						},
+						{
+							"creation-time": "2023-04-19T17:38:21Z",
+							"version": "-1",
+							"source": {
+								"7": {
+									"source-type": "other"
+								}
+							},
+							"unknown-reason": "unknown",
+							"priority": "-1",
+							"summary": "Aussteigeseite: Links"
+						},
+						{
+							"creation-time": "2023-04-19T17:38:21Z",
+							"version": "-1",
+							"source": {
+								"8": {
+									"source-type": "other"
+								}
+							},
+							"unknown-reason": "unknown",
+							"priority": "-1",
+							"summary": "Aussteigeseite: Rechts"
+						},
+						{
+							"creation-time": "2023-04-19T17:38:21Z",
+							"version": "-1",
+							"source": {
+								"9": {
+									"source-type": "other"
+								}
+							},
+							"unknown-reason": "unknown",
+							"priority": "-1",
+							"summary": "Aussteigeseite: Links"
+						}
+					]
 				}
 			},
-			"to": {
-				"station": {
-					"id": "8503000",
-					"name": "Z\u00fcrich HB$<1>$ZH$<4>$Zurich$<4>$Zurigo$<4>$Z\u00fcrich$<4>$ZUE$<3>",
-					"score": null,
-					"coordinate": {
-						"type": "WGS84",
-						"x": "8.540192",
-						"y": "47.378177"
-					},
-					"distance": null
-				},
-				"arrival": "2016-12-31T15:54:00Z",
-				"departure": null,
-				"platform": null,
-				"prognosis": {
-					"platform": null,
-					"departure": null,
-					"arrival": null,
-					"capacity1st": "-1",
-					"capacity2nd": "-1"
-				}
-			},
-			"duration": "78",
-			"products": [
-				"rail"
-			],
-			"capacity1st": "-1",
-			"capacity2nd": "-1"
-		},
-		{
-			"from": {
-				"station": {
-					"id": "8507000",
-					"name": "Bern$<1>$Berna$<4>$Berne (CH)$<4>$BN$<3>",
-					"score": null,
-					"coordinate": {
-						"type": "WGS84",
-						"x": "7.439118",
-						"y": "46.948825"
-					},
-					"distance": null
-				},
-				"arrival": null,
-				"departure": "2016-12-31T15:02:00Z",
-				"platform": null,
-				"prognosis": {
-					"platform": null,
-					"departure": "2016-12-31T15:02:00Z",
-					"arrival": null,
-					"capacity1st": "-1",
-					"capacity2nd": "-1"
-				}
-			},
-			"to": {
-				"station": {
-					"id": "8503000",
-					"name": "Z\u00fcrich HB$<1>$ZH$<4>$Zurich$<4>$Zurigo$<4>$Z\u00fcrich$<4>$ZUE$<3>",
-					"score": null,
-					"coordinate": {
-						"type": "WGS84",
-						"x": "8.540192",
-						"y": "47.378177"
-					},
-					"distance": null
-				},
-				"arrival": "2016-12-31T15:58:00Z",
-				"departure": null,
-				"platform": null,
-				"prognosis": {
-					"platform": null,
-					"departure": null,
-					"arrival": null,
-					"capacity1st": "-1",
-					"capacity2nd": "-1"
-				}
-			},
-			"duration": "56",
-			"products": [
-				"rail"
-			],
-			"capacity1st": "-1",
-			"capacity2nd": "-1"
-		},
-		{
-			"from": {
-				"station": {
-					"id": "8507000",
-					"name": "Bern$<1>$Berna$<4>$Berne (CH)$<4>$BN$<3>",
-					"score": null,
-					"coordinate": {
-						"type": "WGS84",
-						"x": "7.439118",
-						"y": "46.948825"
-					},
-					"distance": null
-				},
-				"arrival": null,
-				"departure": "2016-12-31T15:32:00Z",
-				"platform": null,
-				"prognosis": {
-					"platform": null,
-					"departure": "2016-12-31T15:32:00Z",
-					"arrival": null,
-					"capacity1st": "-1",
-					"capacity2nd": "-1"
-				}
-			},
-			"to": {
-				"station": {
-					"id": "8503000",
-					"name": "Z\u00fcrich HB$<1>$ZH$<4>$Zurich$<4>$Zurigo$<4>$Z\u00fcrich$<4>$ZUE$<3>",
-					"score": null,
-					"coordinate": {
-						"type": "WGS84",
-						"x": "8.540192",
-						"y": "47.378177"
-					},
-					"distance": null
-				},
-				"arrival": "2016-12-31T16:28:00Z",
-				"departure": null,
-				"platform": null,
-				"prognosis": {
-					"platform": null,
-					"departure": null,
-					"arrival": null,
-					"capacity1st": "-1",
-					"capacity2nd": "-1"
-				}
-			},
-			"duration": "56",
-			"products": [
-				"rail"
-			],
-			"capacity1st": "-1",
-			"capacity2nd": "-1"
+			"trip-result": [
+				{
+					"result-id": "ID-5405FAB0-4CD3-4B07-B39F-CE3F0D90F0FA",
+					"trip": [
+						{
+							"trip-id": "ID-E4DE787D-F77E-47D6-8388-0036615DD3B3",
+							"duration": "PT1H19M",
+							"start-time": "2023-04-19T17:37:00Z",
+							"end-time": "2023-04-19T18:56:00Z",
+							"inter-changes": "1",
+							"distance": "118214",
+							"trip-leg": [
+								{
+									"leg-id": "1",
+									"timed-leg": [
+										{
+											"leg-board": [
+												{
+													"stop-point-reference": "8507000",
+													"stop-name": [
+														{
+															"text": [
+																"Bern"
+															],
+															"language": "de"
+														}
+													],
+													"planned-track": [
+														{
+															"text": {
+																"1": "4"
+															},
+															"language": "de"
+														}
+													],
+													"departure": [
+														{
+															"date-time": "2023-04-19T17:36:00Z",
+															"estimated-time": "2023-04-19T17:37:00Z"
+														}
+													],
+													"stops": "1"
+												}
+											],
+											"legalight": [
+												{
+													"stop-point-reference": "8500218",
+													"stop-name": {
+														"1": {
+															"text": {
+																"2": "Olten"
+															},
+															"language": "de"
+														}
+													},
+													"planned-track": {
+														"1": {
+															"text": {
+																"3": "7"
+															},
+															"language": "de"
+														}
+													},
+													"service-arrival": [
+														{
+															"date-time": "2023-04-19T18:03:00Z",
+															"estimated-time": "2023-04-19T18:03:00Z"
+														}
+													],
+													"stops": "2"
+												}
+											],
+											"service": [
+												{
+													"operating-date": "2023-04-19",
+													"journey-reference": "ojp:91061:A:H:j23:226:1082",
+													"line-reference": "ojp:91061:A:H",
+													"direction": "outward",
+													"mode": [
+														{
+															"pt-mode": "rail",
+															"sub-mode": "interregionalRail",
+															"name": [
+																{
+																	"text": "Zug",
+																	"language": "de"
+																}
+															]
+														}
+													],
+													"published-line-name": [
+														{
+															"text": {
+																"4": "IC61"
+															},
+															"language": "de"
+														}
+													],
+													"operation-reference": "ojp:11",
+													"attribute": [
+														{
+															"text": [
+																{
+																	"text": "Businesszone in 1. Klasse",
+																	"language": "de"
+																}
+															],
+															"code": "A__BZ"
+														},
+														{
+															"text": {
+																"1": {
+																	"text": "Ruhezone in 1. Klasse",
+																	"language": "de"
+																}
+															},
+															"code": "A__RZ"
+														},
+														{
+															"text": {
+																"2": {
+																	"text": "Gratis-Internet mit der App SBB FreeSurf",
+																	"language": "de"
+																}
+															},
+															"code": "A__FS"
+														},
+														{
+															"text": {
+																"3": {
+																	"text": "Restaurant",
+																	"language": "de"
+																}
+															},
+															"code": "A__WR"
+														},
+														{
+															"text": {
+																"4": {
+																	"text": "Platzreservierung m\u00f6glich",
+																	"language": "de"
+																}
+															},
+															"code": "A___R"
+														},
+														{
+															"text": {
+																"5": {
+																	"text": "Familienwagen mit Spielplatz",
+																	"language": "de"
+																}
+															},
+															"code": "A__FA"
+														},
+														{
+															"text": {
+																"6": {
+																	"text": "Aussteigeseite: Links",
+																	"language": "de"
+																}
+															},
+															"code": "ojp91061AH_InfoCall226_111055_1"
+														}
+													],
+													"origin-text": [
+														{
+															"language": "de"
+														}
+													],
+													"destination-stop-reference": "8500010",
+													"destination-text": [
+														{
+															"text": {
+																"13": "Basel SBB"
+															},
+															"language": "de"
+														}
+													]
+												}
+											],
+											"track": [
+												{
+													"track-section": [
+														{
+															"track-start": [
+																{
+																	"stop-point-reference": "8507000",
+																	"location-name": [
+																		{
+																			"text": "Bern",
+																			"language": "de"
+																		}
+																	]
+																}
+															],
+															"track-end": [
+																{
+																	"stop-point-reference": "8500218",
+																	"location-name": {
+																		"1": {
+																			"text": "Olten",
+																			"language": "de"
+																		}
+																	}
+																}
+															],
+															"duration": "PT27M",
+															"length": "63692"
+														}
+													]
+												}
+											]
+										}
+									]
+								},
+								{
+									"leg-id": "2",
+									"timed-leg": {
+										"1": {
+											"leg-board": {
+												"1": {
+													"stop-point-reference": "8500218",
+													"stop-name": {
+														"2": {
+															"text": {
+																"14": "Olten"
+															},
+															"language": "de"
+														}
+													},
+													"planned-track": {
+														"2": {
+															"text": {
+																"15": "7"
+															},
+															"language": "de"
+														}
+													},
+													"departure": {
+														"1": {
+															"date-time": "2023-04-19T18:20:00Z",
+															"estimated-time": "2023-04-19T18:20:00Z"
+														}
+													},
+													"stops": "1"
+												}
+											},
+											"intermetiates": [
+												{
+													"stop-point-reference": "8502113",
+													"stop-name": {
+														"3": {
+															"text": {
+																"16": "Aarau"
+															},
+															"language": "de"
+														}
+													},
+													"planned-track": {
+														"3": {
+															"text": {
+																"17": "3"
+															},
+															"language": "de"
+														}
+													},
+													"service-arrival": {
+														"1": {
+															"date-time": "2023-04-19T18:29:00Z",
+															"estimated-time": "2023-04-19T18:29:00Z"
+														}
+													},
+													"departure": {
+														"2": {
+															"date-time": "2023-04-19T18:31:00Z",
+															"estimated-time": "2023-04-19T18:31:00Z"
+														}
+													},
+													"stops": "2"
+												}
+											],
+											"legalight": {
+												"1": {
+													"stop-point-reference": "8503000",
+													"stop-name": {
+														"4": {
+															"text": {
+																"18": "Z\u00fcrich HB"
+															},
+															"language": "de"
+														}
+													},
+													"planned-track": {
+														"4": {
+															"text": {
+																"19": "18"
+															},
+															"language": "de"
+														}
+													},
+													"TRIAS:ESTIMATEDBAY": [
+														{
+															"text": {
+																"20": "9"
+															},
+															"language": "de"
+														}
+													],
+													"service-arrival": {
+														"2": {
+															"date-time": "2023-04-19T18:56:00Z",
+															"estimated-time": "2023-04-19T18:56:00Z"
+														}
+													},
+													"stops": "3"
+												}
+											},
+											"service": {
+												"1": {
+													"operating-date": "2023-04-19",
+													"journey-reference": "ojp:91005:A:H:j23:729:535",
+													"line-reference": "ojp:91005:A:H",
+													"direction": "outward",
+													"mode": {
+														"1": {
+															"pt-mode": "rail",
+															"sub-mode": "interregionalRail",
+															"name": {
+																"1": {
+																	"text": "Zug",
+																	"language": "de"
+																}
+															}
+														}
+													},
+													"published-line-name": {
+														"1": {
+															"text": {
+																"21": "IC5"
+															},
+															"language": "de"
+														}
+													},
+													"operation-reference": "ojp:11",
+													"attribute": {
+														"7": {
+															"text": {
+																"7": {
+																	"text": "Platzreservierung m\u00f6glich",
+																	"language": "de"
+																}
+															},
+															"code": "A___R"
+														},
+														"8": {
+															"text": {
+																"8": {
+																	"text": "VELOS: Reservierung obligatorisch",
+																	"language": "de"
+																}
+															},
+															"code": "A__VR"
+														},
+														"9": {
+															"text": {
+																"9": {
+																	"text": "Businesszone in 1. Klasse",
+																	"language": "de"
+																}
+															},
+															"code": "A__BZ"
+														},
+														"10": {
+															"text": {
+																"10": {
+																	"text": "Gratis-Internet mit der App SBB FreeSurf",
+																	"language": "de"
+																}
+															},
+															"code": "A__FS"
+														},
+														"11": {
+															"text": {
+																"11": {
+																	"text": "Familienzone ohne Spielplatz",
+																	"language": "de"
+																}
+															},
+															"code": "A__FZ"
+														},
+														"12": {
+															"text": {
+																"12": {
+																	"text": "Ruhezone in 1. Klasse",
+																	"language": "de"
+																}
+															},
+															"code": "A__RZ"
+														},
+														"13": {
+															"text": {
+																"13": {
+																	"text": "Neigezug",
+																	"language": "de"
+																}
+															},
+															"code": "A__TT"
+														},
+														"14": {
+															"text": {
+																"14": {
+																	"text": "Restaurant",
+																	"language": "de"
+																}
+															},
+															"code": "A__WR"
+														},
+														"15": {
+															"text": {
+																"15": {
+																	"text": "Aussteigeseite: Links",
+																	"language": "de"
+																}
+															},
+															"code": "ojp91005AH_InfoCall729_106652_1"
+														},
+														"16": {
+															"text": {
+																"16": {
+																	"text": "Aussteigeseite: Rechts",
+																	"language": "de"
+																}
+															},
+															"code": "ojp91005AH_InfoCall729_108276_1"
+														}
+													},
+													"origin-text": {
+														"1": {
+															"language": "de"
+														}
+													},
+													"destination-stop-reference": "8503000",
+													"destination-text": {
+														"1": {
+															"text": {
+																"33": "Z\u00fcrich HB"
+															},
+															"language": "de"
+														}
+													}
+												}
+											},
+											"track": {
+												"1": {
+													"track-section": {
+														"1": {
+															"track-start": {
+																"1": {
+																	"stop-point-reference": "8500218",
+																	"location-name": {
+																		"2": {
+																			"text": "Olten",
+																			"language": "de"
+																		}
+																	}
+																}
+															},
+															"track-end": {
+																"1": {
+																	"stop-point-reference": "8503000",
+																	"location-name": {
+																		"3": {
+																			"text": "Z\u00fcrich HB",
+																			"language": "de"
+																		}
+																	}
+																}
+															},
+															"duration": "PT36M",
+															"length": "54522"
+														}
+													}
+												}
+											}
+										}
+									}
+								}
+							]
+						}
+					]
+				},				
+			]
 		}
-	]
-    }
+	}
+}
 
 #### /stationboard ####
 
@@ -450,121 +823,207 @@ Response Parameters:
     GET http://transport.gnostx.com/stationboard?id=8503000&datetime=2016-12-12T22:00:00&type=departure
     GET http://transport.gnostx.com/stationboard?id=8503000&datetime=2016-12-12T22:00:00&type=arrival&limit=3
     
-    
 ##### Example response #####
 
     {
-	"stationboard": [
-		{
-			"stop": {
-				"station": [
+	"stationboard": {
+		"info": "Stationboard station location search contains more than one result. Number of results: 100. The first appearing station with the BPUIC \"8508183\" was taken, with the name \"Madiswil\". If you did not found your desired station, please search more specific like \"?station=Bern Wankdorf Bahnhof\".",
+		"results": [
+			{
+				"result-id": "ID-42F211F6-9EF9-490C-91A6-A8522570B500",
+				"stop-event": [
 					{
-						"id": "8503000",
-						"name": "Z\u00fcrich HB$<1>$ZH$<4>$Zurich$<4>$Zurigo$<4>$Z\u00fcrich$<4>$ZUE$<3>",
-						"score": null,
-						"coordinate": {
-							"type": "WGS84",
-							"x": "8.540192",
-							"y": "47.378177"
-						},
-						"distance": null
+						"call": [
+							{
+								"call-stop": [
+									{
+										"stop-point-reference": "8508183",
+										"stop-name": [
+											{
+												"text": "Madiswil",
+												"language": "de"
+											}
+										],
+										"planned-track": [
+											{
+												"text": "2",
+												"language": "de"
+											}
+										],
+										"departure": [
+											{
+												"date-time": "2023-04-19T12:57:00Z",
+												"TRIAS:ESTIMATEDTIME": "2023-04-19T12:59:00Z"
+											}
+										],
+										"stops": "5"
+									}
+								]
+							}
+						],
+						"service": [
+							{
+								"operating-date": "2023-04-19",
+								"journey-reference": "ojp:91007:D:R:j23:141:21761",
+								"line-reference": "ojp:91007:D:R",
+								"direction": "return",
+								"mode": [
+									{
+										"pt-mode": "rail",
+										"sub-mode": "regionalRail",
+										"name": [
+											{
+												"text": "Zug",
+												"language": "de"
+											}
+										]
+									}
+								],
+								"published-line-name": [
+									{
+										"text": [
+											"S7"
+										],
+										"language": "de"
+									}
+								],
+								"operation-reference": "ojp:33",
+								"attribute": [
+									{
+										"text": [
+											{
+												"text": "Aussteigeseite: Rechts",
+												"language": "de"
+											}
+										],
+										"code": "ojp91007DR_InfoCall141_111793_1"
+									}
+								],
+								"origin-stop-reference": "8508187",
+								"origin-text": [
+									{
+										"text": {
+											"2": "Huttwil"
+										},
+										"language": "de"
+									}
+								],
+								"destination-stop-reference": "8508100",
+								"destination-text": [
+									{
+										"text": {
+											"3": "Langenthal"
+										},
+										"language": "de"
+									}
+								]
+							}
+						]
 					}
-				],
-				"arrival": "2016-12-12T21:00:00Z",
-				"arrivalTimeStamp": null,
-				"departure": null,
-				"departureTimestamp": null,
-				"platform": "",
-				"prognosis": {
-					"platform": "",
-					"arrival": null,
-					"departure": null,
-					"capacity1st": "-1",
-					"capacity2nd": "-1"
-				},
-				"name": "odp:26003::H:j17:18385",
-				"category": "S-Bahn",
-				"number": "3",
-				"operator": "odp:11",
-				"to": "Wetzikon"
-			}
-		},
-		{
-			"stop": {
-				"station": [
-					{
-						"id": "8503000",
-						"name": "Z\u00fcrich HB$<1>$ZH$<4>$Zurich$<4>$Zurigo$<4>$Z\u00fcrich$<4>$ZUE$<3>",
-						"score": null,
-						"coordinate": {
-							"type": "WGS84",
-							"x": "8.540192",
-							"y": "47.378177"
+				]
+			},
+			{
+				"result-id": "ID-4EE60CE3-C514-41EE-BABC-833ECE5FDBA7",
+				"stop-event": {
+					"1": {
+						"call": {
+							"1": {
+								"call-stop": {
+									"1": {
+										"stop-point-reference": "8508183",
+										"stop-name": {
+											"1": {
+												"text": "Madiswil",
+												"language": "de"
+											}
+										},
+										"planned-track": {
+											"1": {
+												"text": "3",
+												"language": "de"
+											}
+										},
+										"departure": {
+											"1": {
+												"date-time": "2023-04-19T12:59:00Z",
+												"TRIAS:ESTIMATEDTIME": "2023-04-19T12:59:00Z"
+											}
+										},
+										"stops": "5"
+									}
+								}
+							}
 						},
-						"distance": null
+						"service": {
+							"1": {
+								"operating-date": "2023-04-19",
+								"journey-reference": "ojp:91007:D:H:j23:41:21754",
+								"line-reference": "ojp:91007:D:H",
+								"direction": "outward",
+								"mode": {
+									"1": {
+										"pt-mode": "rail",
+										"sub-mode": "regionalRail",
+										"name": {
+											"1": {
+												"text": "Zug",
+												"language": "de"
+											}
+										}
+									}
+								},
+								"published-line-name": {
+									"1": {
+										"text": {
+											"4": "S7"
+										},
+										"language": "de"
+									}
+								},
+								"operation-reference": "ojp:33",
+								"attribute": {
+									"1": {
+										"text": {
+											"1": {
+												"text": "Aussteigeseite: Rechts",
+												"language": "de"
+											}
+										},
+										"code": "ojp91007DH_InfoCall41_111793_1"
+									}
+								},
+								"origin-stop-reference": "8508100",
+								"origin-text": {
+									"1": {
+										"text": {
+											"6": "Langenthal"
+										},
+										"language": "de"
+									}
+								},
+								"destination-stop-reference": "8508187",
+								"destination-text": {
+									"1": {
+										"text": {
+											"7": "Huttwil"
+										},
+										"language": "de"
+									}
+								}
+							}
+						}
 					}
-				],
-				"arrival": "2016-12-12T21:00:00Z",
-				"arrivalTimeStamp": null,
-				"departure": null,
-				"departureTimestamp": null,
-				"platform": "",
-				"prognosis": {
-					"platform": "",
-					"arrival": null,
-					"departure": null,
-					"capacity1st": "-1",
-					"capacity2nd": "-1"
-				},
-				"name": "odp:54003:Y:H:j17:79",
-				"category": "ICE",
-				"number": [
-				],
-				"operator": "odp:11",
-				"to": "Z\u00fcrich HB"
-			}
-		},
-		{
-			"stop": {
-				"station": [
-					{
-						"id": "8503000",
-						"name": "Z\u00fcrich HB$<1>$ZH$<4>$Zurich$<4>$Zurigo$<4>$Z\u00fcrich$<4>$ZUE$<3>",
-						"score": null,
-						"coordinate": {
-							"type": "WGS84",
-							"x": "8.540192",
-							"y": "47.378177"
-						},
-						"distance": null
-					}
-				],
-				"arrival": "2016-12-12T21:03:00Z",
-				"arrivalTimeStamp": null,
-				"departure": null,
-				"departureTimestamp": null,
-				"platform": "",
-				"prognosis": {
-					"platform": "",
-					"arrival": null,
-					"departure": null,
-					"capacity1st": "-1",
-					"capacity2nd": "-1"
-				},
-				"name": "odp:26009:A:H:j17:18984",
-				"category": "S-Bahn",
-				"number": "9",
-				"operator": "odp:11",
-				"to": "Schaffhausen"
-			}
-		}
-	]
-    }
+				}
+			},
+		]
+	}
+}
+
 ### API Objects ###
 
 #### Location Object####
 
-- type:not supported, set to station (but is not always true
+- type: not supported, set to station (but is not always true)
 - score: not supported, set to 0
 - distance: not supported, set to 0
 
@@ -586,7 +1045,7 @@ Response Parameters:
 
 #### Service Object ####
 
-object not supported
+- object not supported
 
 #### Prognosis Object ####
 
@@ -601,10 +1060,9 @@ object not supported
 - category: contains the submode from VDV 431
 - number: the line number
 
-
 #### Section Object ####
 
-This object not supported.
+- This object not supported.
 
 #### Journey Object ####
 Minimalistic support for station board
