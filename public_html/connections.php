@@ -1,24 +1,26 @@
 <?php
 /*
-Copyright 2016 Matthias Günter, GnostX GmbH
+    Copyright 2016 Matthias GÃ¼nter, GnostX GmbH
 
-Licensed under the Apache License, Version 2.0 (the "License");
-you may not use this file except in compliance with the License.
-You may obtain a copy of the License at
+    Licensed under the Apache License, Version 2.0 (the "License");
+    you may not use this file except in compliance with the License.
+    You may obtain a copy of the License at
 
     http://www.apache.org/licenses/LICENSE-2.0
 
-Unless required by applicable law or agreed to in writing, software
-distributed under the License is distributed on an "AS IS" BASIS,
-WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-See the License for the specific language governing permissions and
-limitations under the License.
+    Unless required by applicable law or agreed to in writing, software
+    distributed under the License is distributed on an "AS IS" BASIS,
+    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+    See the License for the specific language governing permissions and
+    limitations under the License.
 */
+
 include_once "error.php";
 include_once "curl.php";
+include_once "helpers.php";
 include_once "location.php";
-include_once "sec/keys.php";
-include_once "sec/triprequest_template.php";
+include_once __DIR__ . "../transport-api-env/configuration.php";
+include_once __DIR__ . "../transport-api-env/triprequest_template.php";
 
 /**
 * Gets a stationboard from the TRIAS interface of opentransportdata.swiss and returns a transport-API conform answer
@@ -28,117 +30,87 @@ include_once "sec/triprequest_template.php";
 * $param $isdeparture - true = departure, false arrival
 * @returns a transport-API conform answer with all information that is in the opentransport-system
 */
-function getconnections($startbpuic,$stopbpuic,$starttime,$stoptime,$numres){
+function getConnections($startbpuic, $stopbpuic, $starttime, $stoptime, $numres, $queryInfo = null) {
+    global $triprequestxml, $apiKey, $apiUrl;
 
-global $triprequestxml, $MYAPIKEY;
+    $xml = $triprequestxml;
+    $xml = str_replace("%%%REQUEST_TIMESTAMP%%%", date('c'), $xml);
+    $xml = str_replace("%%%StartBPUIC%%%", $startbpuic, $xml);
+    $xml = str_replace("%%%StopBPUIC%%%", $stopbpuic, $xml);
 
-$xml=$triprequestxml;
-$xml=str_replace("%%%StartBPUIC%%%",$startbpuic,$xml);
-$xml=str_replace("%%%StopBPUIC%%%",$stopbpuic,$xml);
+    if ($numres > 90 || $numres < 1) {
+        $numres = 30;
+    }
+    $xml = str_replace("%%%NumRES%%%", $numres, $xml);
 
-if ($numres >90 or $numres <1) {$numres=30;}
-$xml=str_replace("%%%NumRES%%%",$numres,$xml);
+    $xml = replacetime($starttime, "%%%StartDateTime%%%", $xml);
+    $xml = replacetime($stoptime, "%%%StopDateTime%%%", $xml);
 
-$xml=replacetime($starttime,"%%%StartDateTime%%%",$xml);
-$xml=replacetime($stoptime,"%%%StopDateTime%%%",$xml);
+    $url = $apiUrl;
+    if (null === $url) {
+        echo "API URL is not set.";
+        exit;
+    }
 
-//var_dump_file("req1.log",$xml);
-$url="https://api.opentransportdata.swiss/trias";
+    if (null === $apiKey) {
+        echo "API key is not set.";
+        exit;
+    }
 
-$res=do_curl_trias_api($url, $xml,$MYAPIKEY); 
-file_put_contents("php://stdout", "\n$res");
-// http://stackoverflow.com/questions/8830599/php-convert-xml-to-json
-$xmldom = simplexml_load_string($res);
-$json = json_encode($xmldom);
-$array = json_decode($json,TRUE);
+    $result = do_curl_trias_api($url, $xml, $apiKey); 
+    file_put_contents("php://stdout", "\n$result");
 
-  //var_dump_file("res.log",$array);
-  
-  $work= $array['ServiceDelivery']['DeliveryPayload']['TripResponse']['TripResult'];
-  $connections = array();
-  $i=0;
-  foreach ($work as $tripevent){
-	    if (!isset ($tripevent['Trip'])){
-			var_dump_file("log.txt",$tripevent);
-			continue;
-		}
-		  //handle TripDuration
-		  $duration=$tripevent['Trip']['Duration'];
-		  
-		  //handle Service
-		  //not supported
-		  
-		  //handle products
-		  $products = array();
-		  $to=array();
-		  $from=array();
-		  //handle capacity
-		  $capacity1st="-1"; //not supported
-		  $capacity2nd="-1"; //not supported
-		  
-		  $leg=$tripevent['Trip']['TripLeg']['TimedLeg']; //only one for the time being!
+    $xmlValidation = validXmlString($result);
+    if (gettype($xmlValidation) === 'string') {
+        trigger_error("Results does not contain valid XML. Check the sent XML. XML errors: " . $xmlValidation, E_USER_ERROR);
+        return false;
+    }
 
-		  //get from
-		  $from['station']=$leg['LegBoard']['StopPointRef'];
-		  //var_dump_file("leg.txt",$leg['LegBoard']['StopPointRef']);
-		  //mylog($from['station']);
-		  $from['name']=$leg['LegBoard']['StopPointName']['Text'];
-		  $from['departure']=$leg['LegBoard']['ServiceDeparture']['TimetabledTime'];
-		  $from['depprognostic']=$leg['LegBoard']['ServiceDeparture']['EstimatedTime']; //may not exist
-		  $from['arrival']=null;
-		  $from['arrivalprognostic']=null;
-		  $from['capacity1st']="-1";
-		  $from['capacity2nd']="-1";
-		  
-		  // doing to
-		  $to['station']=$leg['LegAlight']['StopPointRef'];
-		  $to['name']=$leg['LegAlight']['StopPointName']['Text'];
-		  $to['departure']= null;
-		  $to['depprognostic']= null;
-		  $to['arrival']=$leg['LegAlight']['ServiceArrival']['TimetabledTime'];;
-		  $to['arrivalprognostic']=$leg['LegAlight']['ServiceArrival']['EstimatedTime']; //may not exist
-		  $to['capacity1st']="-1";
-		  $to['capacity2nd']="-1";
-	
-		  //do service
-		  $products[] =  $leg['Service']['Mode']['PtMode']; //@TODO Probably not compatible to transport-API
-		  
-		  
-		  //build
-		  $ttconnection = array();
-		  $ttconnection['from'] = buildcheckpoint($from);
-		  $ttconnection['to'] = buildcheckpoint($to);
-		  $ttconnection['duration']=$duration;
-		  $ttconnection['products']=$products;
-		  $ttconnection['capacity1st']=$capacity1st;
-		  $ttconnection['capacity2nd']=$capacity2nd;
-		  array_push ($connections,$ttconnection);
-	  
+    $xmlArray = XMLtoArray($result);
+    if (!is_array($xmlArray)) {
+        trigger_error("xmlArray is not an array. Check the XML", E_USER_ERROR);
+        return false;
+    }
 
-  }
-	  $connboardwrap = array();
-	  $connboardwrap['connections']=$connections;
-	  return json_encode($connboardwrap);
+    if (isset($xmlArray['TRIAS:TRIAS']['TRIAS:SERVICEDELIVERY']["TRIAS:DELIVERYPAYLOAD"]["TRIAS:STOPEVENTRESPONSE"]["TRIAS:ERRORMESSAGE"])) {
+        $apiError = $xmlArray['TRIAS:TRIAS']['TRIAS:SERVICEDELIVERY']["TRIAS:DELIVERYPAYLOAD"]["TRIAS:STOPEVENTRESPONSE"]["TRIAS:ERRORMESSAGE"]["TRIAS:TEXT"]["TRIAS:TEXT"];
+        echo 'The API returned an error: ' . $apiError . '. Maybe the provided date is in the past or too far in the future.';
+        return false;
+    }
+
+    $xmlArrayItems = $xmlArray['TRIAS:TRIAS']['TRIAS:SERVICEDELIVERY']['TRIAS:DELIVERYPAYLOAD']['TRIAS:TRIPRESPONSE'];
+
+    // readableArrayKeys needs the order of keys appearing
+    // sorry, this is quite unreadable. TODO: readableArrayKeys should accept one $keys array with old key as key and new key as value
+    $resultArray = readableArrayKeys($xmlArrayItems,
+        ['TRIAS:TRIPRESPONSECONTEXT', 'TRIAS:SITUATIONS', "TRIAS:PTSITUATION", "SIRI:CREATIONTIME", "SIRI:VERSION", "SIRI:SOURCE", "SIRI:SOURCETYPE", "SIRI:UNKNOWNREASON", "SIRI:PRIORITY", "SIRI:SUMMARY", "TRIAS:TRIPRESULT", 'TRIAS:RESULTID', 'TRIAS:STOPEVENT', "TRIAS:THISCALL", "TRIAS:CALLATSTOP", "TRIAS:STOPPOINTREF", "TRIAS:STOPPOINTNAME", "TRIAS:TEXT", "TRIAS:LANGUAGE", "TRIAS:PLANNEDBAY", "TRIAS:SERVICEDEPARTURE", "TRIAS:TIMETABLEDTIME", "TRIAS:STOPSEQNUMBER", "TRIAS:SERVICE", "TRIAS:OPERATINGDAYREF", "TRIAS:JOURNEYREF", "TRIAS:LINEREF", "TRIAS:DIRECTIONREF", "TRIAS:MODE", "TRIAS:PTMODE", "TRIAS:RAILSUBMODE", "TRIAS:NAME", "TRIAS:PUBLISHEDLINENAME", "TRIAS:OPERATORREF", "TRIAS:ATTRIBUTE", "TRIAS:CODE", "TRIAS:ORIGINSTOPPOINTREF", "TRIAS:ORIGINTEXT", "TRIAS:DESTINATIONSTOPPOINTREF", "TRIAS:DESTINATIONTEXT", "TRIAS:TRIP", "TRIAS:TRIPID", "TRIAS:DURATION", "TRIAS:STARTTIME", "TRIAS:ENDTIME", "TRIAS:INTERCHANGES", "TRIAS:DISTANCE", "TRIAS:TRIPLEG", "TRIAS:LEGID", "TRIAS:TIMEDLEG", "TRIAS:LEGBOARD", "TRIAS:ESTIMATEDTIME", "TRIAS:LEGALIGHT", "TRIAS:SERVICEARRIVAL", "TRIAS:LEGTRACK", "TRIAS:TRACKSECTION", "TRIAS:TRACKSTART", "TRIAS:LOCATIONNAME", "TRIAS:TRACKEND", "TRIAS:DURATION", "TRIAS:LENGTH", "TRIAS:LEGINTERMEDIATES", "TRIAS:DEVIATION"],
+        ['trip-context', 'situations', 'pt-situations', 'creation-time', 'version', 'source', 'source-type', 'unknown-reason', 'priority', 'summary', 'trip-result', 'result-id', 'stop-event', 'call', 'call-stop', 'stop-point-reference', 'stop-name', 'text', 'language', 'planned-track', 'departure', 'date-time', 'stops', 'service', 'operating-date', 'journey-reference', 'line-reference', 'direction', 'mode', 'pt-mode', 'sub-mode', 'name', 'published-line-name', 'operation-reference', 'attribute', 'code', 'origin-stop-reference', 'origin-text', 'destination-stop-reference', 'destination-text', 'trip', 'trip-id', 'duration', 'start-time', 'end-time', 'inter-changes', 'distance', 'trip-leg', 'leg-id', 'timed-leg', 'leg-board', 'estimated-time', 'legalight', 'service-arrival', 'track', 'track-section', 'track-start', 'location-name', 'track-end', 'duration', 'length', 'intermetiates', 'deviation'],
+    );
+
+    $returnArray['connections'] = [];
+    if ($queryInfo) {
+        $returnArray['connections']['info'] = $queryInfo;
+    }
+    $returnArray['connections']['results'] = $resultArray;
+
+    return json_encode($returnArray);
 }
-		 
-
-		 
+	 
 /**
 * Builds a transportAPI checkpoint element
 * @info - contains the intermediate format to built it
 * @returns a transport-API conform checkpoint
 */		 
-function buildcheckpoint ($info){
+function buildCheckpoint($info) {
 	$chk = array();
-	//mylog($info['station']);
-	$chk['station']= getfirstlocationFull($info['station']); 
-	$chk['arrival']=$info['arrival'];
-	$chk['departure']=$info['departure'];
-	$chk['platform']=$info['plannedBay'];
-	$chk['prognosis']=buildprognostic($info['estimatedBay'],$info['depprognostic'],$info['arrprognostic']);
+
+    $chk['station'] = getFirstLocationFull($info['station']); 
+	$chk['arrival'] = $info['arrival'];
+	$chk['departure'] = $info['departure'];
+	$chk['platform'] = $info['plannedBay'];
+	$chk['prognosis'] = buildPrognostic($info['estimatedBay'], $info['depprognostic'], $info['arrprognostic']);
 	
 	return $chk;
-	
 }
 		 
 /**
@@ -148,14 +120,15 @@ function buildcheckpoint ($info){
 * @arrival - estimated arrival (if it exists)
 * @returns a transport-API conform prognosis element
 */		 
-function buildprognostic($platform, $departure,$arrival){
+function buildPrognostic($platform, $departure, $arrival) {
 	$prog = array();
-	//mylog ($departure);
-	$prog['platform'] = $platform;
+
+    $prog['platform'] = $platform;
 	$prog['departure'] = $departure;
 	$prog ['arrival'] = $arrival;
 	$prog ['capacity1st'] = "-1"; //not supported
 	$prog ['capacity2nd'] = "-1"; // not supported
+
 	return $prog;
 }
 		 
@@ -168,19 +141,18 @@ function buildprognostic($platform, $departure,$arrival){
 * $param $isdeparture - true = departure, false arrival
 * @returns a transport-API conform answer with all information that is in the opentransport-system or false
 */
-function getconnectionsbyname($start,$stop,$starttime,$stoptime,$numres){
+// INFO: this seems not to be used. If it should be used, it should be adjusted to the new API
+function getConnectionsByName($start, $stop, $starttime, $stoptime, $numres) {
 	file_put_contents("php://stdout", "\n the station: >$station<");
 	
-	$startbpuic=getfirstlocation($start);
-	$stopbpuic=getfirstlocation($stop);
-	if (isset($startbpuic) and isset($stopbpuic)){
-	  
-      return getconnections($startbpuic,$stopbpuic,$starttime,$stoptime,$numres);
-	  }
-	$res = array();
-	return $res; 
-	
-}
+	$startbpuic = getFirstLocation($ckanApiKey, $ckanApiUrl, $start);
+	$stopbpuic = getFirstLocation($ckanApiKey, $ckanApiUrl, $stop);
+	if (isset($startbpuic) && isset($stopbpuic)) {
+        return getConnections($startbpuic, $stopbpuic, $starttime, $stoptime, $numres);
+	}
 
+	$result = array();
+	return $result; 
+}
 
 ?>

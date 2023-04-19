@@ -1,34 +1,69 @@
 <?php
 /*
-Copyright 2016 Matthias Günter, GnostX GmbH
+    Copyright 2016 Matthias GÃ¼nter, GnostX GmbH
 
-Licensed under the Apache License, Version 2.0 (the "License");
-you may not use this file except in compliance with the License.
-You may obtain a copy of the License at
+    Licensed under the Apache License, Version 2.0 (the "License");
+    you may not use this file except in compliance with the License.
+    You may obtain a copy of the License at
 
     http://www.apache.org/licenses/LICENSE-2.0
 
-Unless required by applicable law or agreed to in writing, software
-distributed under the License is distributed on an "AS IS" BASIS,
-WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-See the License for the specific language governing permissions and
-limitations under the License.
+    Unless required by applicable law or agreed to in writing, software
+    distributed under the License is distributed on an "AS IS" BASIS,
+    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+    See the License for the specific language governing permissions and
+    limitations under the License.
 */
 
 include_once "buffer.php";
 include_once "error.php";
 include_once "curl.php";
 
+function checkDidokResult($didok) {
+	if ($didok->success === false) {
+		trigger_error("didok curl not successfull. Check the ckanApiUrl.", E_USER_ERROR);
+        return false;
+	}
+	if (!isset($didok->result)) {
+		trigger_error("didok curl returned no result. Check the ckanApiUrl.", E_USER_ERROR);
+        return false;
+	}
+	if (!isset($didok->result->resources)) {
+		trigger_error("didok curl returned no resources. Check the ckanApiUrl.", E_USER_ERROR);
+        return false;
+	}
+	if (!isset($didok->result->resources[3])) {
+		trigger_error("didok curl returned no dienststellen_full. Check the ckanApiUrl.", E_USER_ERROR);
+        return false;
+	}
+	return true;
+}
+
+function checkDatastoreSearchResult($data) {
+	if ($data->success === false) {
+		trigger_error("didok search curl not successfull. Check the ckanApiUrl.", E_USER_ERROR);
+        return false;
+	}
+	if (!isset($data->result)) {
+		trigger_error("didok search curl returned no result. Check the ckanApiUrl.", E_USER_ERROR);
+        return false;
+	}
+	if (!isset($data->result->records)) {
+		trigger_error("didok search curl returned no result records. Check the ckanApiUrl.", E_USER_ERROR);
+        return false;
+	}
+	return true;
+}
 
 /**
 * Builds a transportAPI JSON answer for locations
 * @query - The query string
 * @returns a transport-API conform location answer
 */	
-function getlocationjson($query) {
-	$res=getlocation($query);
+function getLocationJson($ckanApiKey, $ckanApiUrl, $query) {
+	$result = getLocation($ckanApiKey, $ckanApiUrl, $query);
 	$r2value = array();
-	$r2value['stations']=$res;
+	$r2value['stations'] = $result;
 	return json_encode($r2value);	
 }
 
@@ -37,10 +72,10 @@ function getlocationjson($query) {
 * @query - The query string
 * @returns a transport-API conform location answer
 */	
-function getlocationjsoncoord($x,$y) {
-	$res=getlocationcoord($x,$y);
+function getLocationJsonCoordinates($ckanApiKey, $ckanApiUrl, $x, $y) {
+	$res = getLocationCoordinates($ckanApiKey, $ckanApiUrl, $x, $y);
 	$r2value = array();
-	$r2value['stations']=$res;
+	$r2value['stations'] = $res;
 	return json_encode($r2value);	
 }
 
@@ -49,47 +84,46 @@ function getlocationjsoncoord($x,$y) {
 * @query - the query string
 * @returns rough result for locations
 */	
-function getlocation($query){
-	
-	if (inbuffer('getlocation',$query)){
-		return getbuffer('getlocation',$query);
+function getLocation($ckanApiKey, $ckanApiUrl, $station) {
+	if (inbuffer('getLocation', $station)) {
+		return getbuffer('getLocation', $station);
 	}
-	$data = docurl("https://opentransportdata.swiss/api/action/package_show?id=bhlist");
-	$myArr = $data->result->resources;
-	
-	$id=-1;
-	if (strcmp($myArr[0]->{'identifier'},"Station list")==0){
-		$id=$myArr[0]->{'id'};
-	} else {
-		$id=$myArr[1]->{'id'};
-	}
-	$geoid=-1;
-	if (strcmp($myArr[0]->{'identifier'},"Station geographic")==0){
-		$geoid=$myArr[0]->{'id'};
-	} else {
-		$geoid=$myArr[1]->{'id'};
-	}	
-	$qstr="https://opentransportdata.swiss/api/action/datastore_search?resource_id=%%%id%%%&q=%%%name%%%";
-	$qstr=str_replace("%%%id%%%",$id,$qstr);
-	$qstr=str_replace("%%%name%%%",$query,$qstr);
-	
-	$data = docurl($qstr);
-	
-	$rvalue= array();
-	
 
-	foreach ($data->result->records as $val){
-		$station = array();
-		$station['id'] = $val->StationID;
-		$station['name']= $val->Station;
-		$station['score'] = null;
-		$station['coordinate'] = getcoordinates($val->StationID,$geoid);
-		$station['distance'] = null;
-		$rvalue[]=$station;
+	$didok = doCurl($ckanApiUrl . "/package_show?id=didok", $ckanApiKey);
+	if (!checkDidokResult($didok)) {
+		return [];
 	}
-	setbuffer('getlocation',$query,$rvalue); //buffering
-	return $rvalue;
-	
+
+	$queryId = $didok->result->resources[3]->id;
+	$query = $ckanApiUrl . "/datastore_search?resource_id=" . $queryId . '&q=' . $station;
+
+	$data = doCurl($query, $ckanApiKey);
+	if (!checkDatastoreSearchResult($data)) {
+		return [];
+	}
+
+	$resultRecords = $data->result->records;
+	$locationReducedArray = [];
+	foreach ($resultRecords as $recordKey => $record) {
+		$station = array();
+		$station['id'] = $record->BPUIC;
+		$station['sloid'] = $record->SLOID;
+		$station['name'] = $record->BEZEICHNUNG_OFFIZIELL;
+		$iers = null;
+		if ($record->Z_WGS84) {
+			$iers = $record->Z_WGS84;
+		}
+		$station['coordinate'] = [
+			"type" 		=> "WGS84",
+            "latitude" 	=> $record->N_WGS84,
+			"longitude" => $record->E_WGS84,
+			"IERS" 		=> $iers,
+		];
+		$locationReducedArray[$recordKey] = $station;
+	}
+
+	setbuffer('getLocation', $query, $locationReducedArray); // buffering
+	return $locationReducedArray;
 };	
 
 /**
@@ -97,9 +131,10 @@ function getlocation($query){
 * @param $bpuic - The bpuic code
 * @param $id - the id of the ressource
 * @returns the coordinates in json format
-*/		
-function getcoordinatesjson($bpuic,$id){
-	$r2value['stations']=getcoordinates($bpuic,$id);
+*/
+// INFO: this seems not to be used
+function getCoordinatesJson($bpuic,$id) {
+	$r2value['stations'] = getCoordinates($bpuic, $id);
 	return $r2value;	
 }
 
@@ -108,28 +143,28 @@ function getcoordinatesjson($bpuic,$id){
 * @param $bpuic - The bpuic code
 * @param $id - the id of the ressource
 * @returns the coordinates
-*/		
-function getcoordinates($bpuic,$id){
-	if (inbuffer('getcoordinates',$query)){
-		return getbuffer('getcoordinates',$query);
+*/
+// INFO: this seems not to be used. If it should be used, it should be adjusted to the new API
+function getCoordinates($bpuic, $id) {
+	if (inbuffer('getCoordinates', $query)) {
+		return getbuffer('getCoordinates', $query);
 	}
 
-	$data = docurl("https://opentransportdata.swiss/api/action/package_show?id=bhlist");
+	$data = doCurl("https://opentransportdata.swiss/api/action/package_show?id=bhlist");
 	$myArr = $data->result->resources;
-	$qstr="https://opentransportdata.swiss/api/action/datastore_search?resource_id=%%%id%%%&q=%%%name%%%";
-	$qstr=str_replace("%%%id%%%",$id,$qstr);
-	$qstr=str_replace("%%%name%%%",$bpuic,$qstr);
-	$data = docurl($qstr);
-	$data= $data->result->records;
-	//var_dump($data);
-    $x=$data[0]->Longitude;
-    $y=$data[0]->Latitude;
+	$qstr = "https://opentransportdata.swiss/api/action/datastore_search?resource_id=%%%id%%%&q=%%%name%%%";
+	$qstr = str_replace("%%%id%%%", $id, $qstr);
+	$qstr = str_replace("%%%name%%%", $bpuic, $qstr);
+	$data = doCurl($qstr);
+	$data = $data->result->records;
+    $x = $data[0]->Longitude;
+    $y = $data[0]->Latitude;
 	$station = array();
 	$station['type'] = "WGS84";
-	$station['x']= $x;
-	$station['y']= $y;
+	$station['x'] = $x;
+	$station['y'] = $y;
 
-	setbuffer('getlocation',$query,$station); //buffering
+	setbuffer('getLocation', $query, $station); // buffering
 	return $station;		
 }
 
@@ -139,52 +174,74 @@ function getcoordinates($bpuic,$id){
 * @param $y - The latitude
 * @returns an array of locations
 */		
-function getlocationcoord($x,$y){
-	
-	if (inbuffer('getlocationcoord',$x."---".$y)){
-		return getbuffer('getlocationcoord',$query);
+function getLocationCoordinates($ckanApiKey, $ckanApiUrl, $x, $y) {
+	if (inbuffer('getLocationCoordinates', $x . "---" . $y)) {
+		return getbuffer('getLocationCoordinates', $query);
 	}
-	$data = docurl("https://opentransportdata.swiss/api/action/package_show?id=bhlist");
-	$myArr = $data->result->resources;
-	
-	$id=-1;
-	if (strcmp($myArr[0]->{'identifier'},"Station list")==0){
-		$id=$myArr[0]->{'id'};
-	} else {
-		$id=$myArr[1]->{'id'};
-	}
-	$geoid=-1;
-	if (strcmp($myArr[0]->{'identifier'},"Station geographic")==0){
-		$geoid=$myArr[0]->{'id'};
-	} else {
-		$geoid=$myArr[1]->{'id'};
-	}	
-	$qstr='SELECT * from "%%%id%%%" where (abs("Longitude" - %%%x%%%) <0.03) AND (abs("Latitude" - %%%y%%%) <0.03)';
-	$qstr=str_replace("%%%id%%%",$geoid,$qstr);
-	$qstr=str_replace("%%%x%%%",$x,$qstr);
-	$qstr=str_replace("%%%y%%%",$y,$qstr);
-	
-    $qstr="https://opentransportdata.swiss/api/action/datastore_search_sql?sql=".urlencode($qstr);
-	$data = docurl($qstr);
-	
-	$rvalue= array();
-	//var_dump_file("query.res",$qstr);
 
-	foreach ($data->result->records as $val){
+	$didok = doCurl($ckanApiUrl . "/package_show?id=didok", $ckanApiKey);
+	if (!checkDidokResult($didok)) {
+		return [];
+	}
+
+	$queryId = $didok->result->resources[3]->id;
+
+    // TODO: try fix have datastore sql working
+	$lat = abs($x);
+	$latPlus = $lat + 0.09;
+	$latMinus = $lat - 0.09;
+	$long = abs($y);
+	$longPlus = $long + 0.09;
+	$longMinus = $long - 0.09;
+    // get with sql -> fails
+	//$query = 'SELECT * from "' . $queryId . '" WHERE `E_WGS84` < ' . $latPlus . ' AND `E_WGS84` > ' . $latMinus . ' AND `N_WGS84` < ' . $longPlus . ' AND `N_WGS84` > ' . $longMinus . '';
+	//$urlQuery = $ckanApiUrl . "/datastore_search_sql?sql=" . $query;
+    
+
+    // get with filters -> fails
+    //$queryFilters = '{' . '"E_WGS84": ["' . $latMinus . '", "' . $latPlus . '"]}';
+	//$urlQuery = $ckanApiUrl . "/datastore_search?resource_id=" . $queryId . "&filters=" . $queryFilters;
+
+    // get all
+    // number of lines in dienststelle_full.csv: 148555
+    $urlQuery = $ckanApiUrl . "/datastore_search?resource_id=" . $queryId . "&limit=4000";
+
+	$data = doCurl($urlQuery, $ckanApiKey);
+	if (!checkDatastoreSearchResult($data)) {
+		return [];
+	}
+	
+    // following would be unnecessary if datastore sql would work
+    $returnArray = [];
+    foreach ($data->result->records as $dataKey => $dataEntry) {
+        if ($dataEntry->E_WGS84 < $latPlus && $dataEntry->E_WGS84 > $latMinus && $dataEntry->N_WGS84 < $longPlus && $dataEntry->N_WGS84 > $longMinus) {
+            $returnArray[$dataKey] = $dataEntry;
+        }
+    }
+
+    $locationReducedArray = [];
+	foreach ($returnArray as $recordKey => $record) {
 		$station = array();
-		$station['id'] = $val->StationID;
-		$station['name']= $val->Remark; //@TODO we take it from the remark, which is not really well done
-		$station['score'] = null;
-		$station['coordinate'] = getcoordinates($val->StationID,$geoid); //@TODO his is also not very smooth
-		$station['distance'] = haversineGreatCircleDistance($x,$y,$station['coordinate']['x'],$station['coordinate']['y']);
-		$t=$station['id'];
-		//file_put_contents("php://stdout", "\n>$t<");
-		$rvalue[]=$station;
+		$station['id'] = $record->BPUIC;
+		$station['sloid'] = $record->SLOID;
+		$station['name'] = $record->BEZEICHNUNG_OFFIZIELL;
+		$iers = null;
+		if ($record->Z_WGS84) {
+			$iers = $record->Z_WGS84;
+		}
+		$station['coordinate'] = [
+			"type" 		=> "WGS84",
+            "latitude" 	=> $record->N_WGS84,
+			"longitude" => $record->E_WGS84,
+			"IERS" 		=> $iers,
+		];
+        $station['distance'] = haversineGreatCircleDistance($x, $y, $record->N_WGS84, $record->E_WGS84);
+		$locationReducedArray[$recordKey] = $station;
+        $locationReducedArray[$recordKey]['info'] = 'The location search by lat/long is limited, since queries with sql and with filters did not work.';
 	}
-	setbuffer('getlocationcoord',$x."---".$y,$rvalue); //buffering
 
-	return $rvalue;
-		
+	setbuffer('getLocationCoordinates', $x . "---" . $y, $locationReducedArray); // buffering
+	return $locationReducedArray;
 }
 
 /**
@@ -193,17 +250,15 @@ function getlocationcoord($x,$y){
 * @returns the first location or null
 * @TODO better sorting
 */		
-function getfirstlocationFull($name){
-	$loc_struct=getlocation($name);
-	$n=count($loc_struct);
-	//file_put_contents("php://stdout", "\n num results>$n<");
-	$log=json_encode($loc_struct);
-	//file_put_contents("php://stdout", "\n>$log<");
-	if (count($loc_struct)>0){
-	  
-	  
-      return $loc_struct[0];
-	  }
+function getFirstLocationFull($apiKey, $ckanApiUrl, $name) {
+	$loc_struct = getLocation($apiKey, $ckanApiUrl, $name);
+	$n = count($loc_struct);
+	$log = json_encode($loc_struct);
+
+	if (count($loc_struct) > 0) {
+        return $loc_struct[0];
+	}
+
 	return null;
 }
 
@@ -213,21 +268,19 @@ function getfirstlocationFull($name){
 * @returns the first location or null
 * @TODO better sorting
 */			
-function getfirstlocation($name){
-	$loc_struct=getlocation($name);
-	$n=count($loc_struct);
-	//file_put_contents("php://stdout", "\n num results>$n<");
-	$log=json_encode($loc_struct);
-	//file_put_contents("php://stdout", "\n>$log<");
-	if (count($loc_struct)>0){
-	  $id =$loc_struct[0]['id'];
-	  file_put_contents("php://stdout", "\nid: >$id<");
-      return $id;
-	  }
+function getFirstLocation($apiKey, $ckanApiUrl, $name) {
+	$loc_struct = getLocation($apiKey, $ckanApiUrl, $name);
+	$n = count($loc_struct);
+	$log = json_encode($loc_struct);
+
+    if (count($loc_struct) > 0) {
+        $id = $loc_struct[0]['id'];
+        file_put_contents("php://stdout", "\nid: >$id<");
+        return $id;
+	}
+
 	return null;
 }
-
-
 
 /**
  * Calculates the great-circle distance between two points, with
@@ -240,20 +293,18 @@ function getfirstlocation($name){
  * @return float Distance between points in [m] (same as earthRadius)
  * @see http://stackoverflow.com/questions/10053358/measuring-the-distance-between-two-coordinates-in-php
  */
-function haversineGreatCircleDistance(
-  $latitudeFrom, $longitudeFrom, $latitudeTo, $longitudeTo, $earthRadius = 6371000)
-{
-  // convert from degrees to radians
-  $latFrom = deg2rad($latitudeFrom);
-  $lonFrom = deg2rad($longitudeFrom);
-  $latTo = deg2rad($latitudeTo);
-  $lonTo = deg2rad($longitudeTo);
+function haversineGreatCircleDistance($latitudeFrom, $longitudeFrom, $latitudeTo, $longitudeTo, $earthRadius = 6371000) {
+    // convert from degrees to radians
+    $latFrom = deg2rad($latitudeFrom);
+    $lonFrom = deg2rad($longitudeFrom);
+    $latTo = deg2rad($latitudeTo);
+    $lonTo = deg2rad($longitudeTo);
 
-  $latDelta = $latTo - $latFrom;
-  $lonDelta = $lonTo - $lonFrom;
+    $latDelta = $latTo - $latFrom;
+    $lonDelta = $lonTo - $lonFrom;
 
-  $angle = 2 * asin(sqrt(pow(sin($latDelta / 2), 2) +
-    cos($latFrom) * cos($latTo) * pow(sin($lonDelta / 2), 2)));
-  return $angle * $earthRadius;
+    $angle = 2 * asin(sqrt(pow(sin($latDelta / 2), 2) + cos($latFrom) * cos($latTo) * pow(sin($lonDelta / 2), 2)));
+    return $angle * $earthRadius;
 }
+
 ?>
