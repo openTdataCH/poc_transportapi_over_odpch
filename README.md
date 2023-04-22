@@ -811,7 +811,7 @@ Request Parameters:
 Important:
 
 - station: Be aware, that ODPCH does not use importance of station. Therefore you can get anything. e.g. Zürich will not get you Zürich HB.
-  - if you don't find any results it's advantageous to download the [https://opentransportdata.swiss/de/dataset/didok/resource/c76dd45b-260b-4602-b946-f80696c2414b](Verkehrspunktelemente_full.csv) and look for a matching BPUIC. For example the BPUIC 8515163 (Zürich HB Museumstrasse) delivers no results, but the general Zürich HB BPUIC 8503000 does.
+  - if you don't find any results it's advantageous to download the [Verkehrspunktelemente_full.csv](https://opentransportdata.swiss/de/dataset/didok/resource/c76dd45b-260b-4602-b946-f80696c2414b) and look for a matching BPUIC. For example the BPUIC 8515163 (Zürich HB Museumstrasse) delivers no results, but the general Zürich HB BPUIC 8503000 does.
 - transportations: not supported
 
 Response Parameters:
