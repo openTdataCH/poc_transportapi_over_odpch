@@ -32,7 +32,8 @@ Request Parameters:
 
 Important:
 
-- since it was not possible to implement sql or filter search, all possible results are queried with a limit of 4000 (the whole dienststelle_full. csv has 148555 entries). 4000 was the maximum results before there was a server timeout. Unfortunately quereis with lat/long aren't functioning properly now therefore.
+- lat/long queries: since it was not possible to implement sql or filter search, all possible results are queried with a limit of 4000 (the whole dienststelle_full. csv has at this moment (2023-04-22) 148555 entries). 4000 was the maximum results before there was a server timeout. Unfortunately queries with lat/long aren't functioning properly now therefore.
+- if you are looking for a BPUIC
 - type: not supported
 - transportations: not supported
 - limits: handles limits differently. Not according to time, but really n results.
@@ -51,86 +52,86 @@ Response Parameters:
 ##### Example response #####
 
 ```
-	"stations": {
-		"600": {
-			"id": 8515456,
-			"sloid": "ch:1:sloid:15456",
-			"name": "Neugut Ost bei DUE (Abzw)",
-			"coordinate": {
-				"type": "WGS84",
-				"latitude": 47.40445000022,
-				"longitude": 8.60479000204,
-				"IERS": 430.9
-			},
-			"distance": 5656947.737761683,
-			"info": "The location search by lat\/long is limited, since queries with sql and with filters did not work."
+"stations": {
+	"600": {
+		"id": 8515456,
+		"sloid": "ch:1:sloid:15456",
+		"name": "Neugut Ost bei DUE (Abzw)",
+		"coordinate": {
+			"type": "WGS84",
+			"latitude": 47.40445000022,
+			"longitude": 8.60479000204,
+			"IERS": 430.9
 		},
-		"1058": {
-			"id": 8503200,
-			"sloid": "ch:1:sloid:3200",
-			"name": "Kilchberg",
-			"coordinate": {
-				"type": "WGS84",
-				"latitude": 47.32443156963,
-				"longitude": 8.54801640459,
-				"IERS": 424.1
-			},
-			"distance": 5655013.104207889,
-			"info": "The location search by lat\/long is limited, since queries with sql and with filters did not work."
+		"distance": 5656947.737761683,
+		"info": "The location search by lat\/long is limited, since queries with sql and with filters did not work."
+	},
+	"1058": {
+		"id": 8503200,
+		"sloid": "ch:1:sloid:3200",
+		"name": "Kilchberg",
+		"coordinate": {
+			"type": "WGS84",
+			"latitude": 47.32443156963,
+			"longitude": 8.54801640459,
+			"IERS": 424.1
 		},
-		"1117": {
-			"id": 8591236,
-			"sloid": "ch:1:sloid:91236",
-			"name": "Z\u00fcrich, Krematorium Sihlfeld",
-			"coordinate": {
-				"type": "WGS84",
-				"latitude": 47.37780610449,
-				"longitude": 8.50787199573,
-				"IERS": 412
-			},
-			"distance": 5660995.515985221,
-			"info": "The location search by lat\/long is limited, since queries with sql and with filters did not work."
+		"distance": 5655013.104207889,
+		"info": "The location search by lat\/long is limited, since queries with sql and with filters did not work."
+	},
+	"1117": {
+		"id": 8591236,
+		"sloid": "ch:1:sloid:91236",
+		"name": "Z\u00fcrich, Krematorium Sihlfeld",
+		"coordinate": {
+			"type": "WGS84",
+			"latitude": 47.37780610449,
+			"longitude": 8.50787199573,
+			"IERS": 412
 		},
-		"1118": {
-			"id": 8519512,
-			"sloid": "ch:1:sloid:19512",
-			"name": "Z\u00fcrich, Letzigrund (Vzw)",
-			"coordinate": {
-				"type": "WGS84",
-				"latitude": 47.38096082849,
-				"longitude": 8.50425362759,
-				"IERS": 410
-			},
-			"distance": 5661424.014328691,
-			"info": "The location search by lat\/long is limited, since queries with sql and with filters did not work."
+		"distance": 5660995.515985221,
+		"info": "The location search by lat\/long is limited, since queries with sql and with filters did not work."
+	},
+	"1118": {
+		"id": 8519512,
+		"sloid": "ch:1:sloid:19512",
+		"name": "Z\u00fcrich, Letzigrund (Vzw)",
+		"coordinate": {
+			"type": "WGS84",
+			"latitude": 47.38096082849,
+			"longitude": 8.50425362759,
+			"IERS": 410
 		},
-		"1119": {
-			"id": 8519512,
-			"sloid": "ch:1:sloid:19512",
-			"name": "Z\u00fcrich, Letzigrund (Vzw)",
-			"coordinate": {
-				"type": "WGS84",
-				"latitude": 47.38096082849,
-				"longitude": 8.50425362759,
-				"IERS": 410
-			},
-			"distance": 5661424.014328691,
-			"info": "The location search by lat\/long is limited, since queries with sql and with filters did not work."
+		"distance": 5661424.014328691,
+		"info": "The location search by lat\/long is limited, since queries with sql and with filters did not work."
+	},
+	"1119": {
+		"id": 8519512,
+		"sloid": "ch:1:sloid:19512",
+		"name": "Z\u00fcrich, Letzigrund (Vzw)",
+		"coordinate": {
+			"type": "WGS84",
+			"latitude": 47.38096082849,
+			"longitude": 8.50425362759,
+			"IERS": 410
 		},
-		"1298": {
-			"id": 8516737,
-			"sloid": "ch:1:sloid:16737",
-			"name": "Z\u00fcrich Weinbergtunnel",
-			"coordinate": {
-				"type": "WGS84",
-				"latitude": 47.38993785184,
-				"longitude": 8.53786514796,
-				"IERS": 451
-			},
-			"distance": 5660000.742642435,
-			"info": "The location search by lat\/long is limited, since queries with sql and with filters did not work."
+		"distance": 5661424.014328691,
+		"info": "The location search by lat\/long is limited, since queries with sql and with filters did not work."
+	},
+	"1298": {
+		"id": 8516737,
+		"sloid": "ch:1:sloid:16737",
+		"name": "Z\u00fcrich Weinbergtunnel",
+		"coordinate": {
+			"type": "WGS84",
+			"latitude": 47.38993785184,
+			"longitude": 8.53786514796,
+			"IERS": 451
 		},
-	}
+		"distance": 5660000.742642435,
+		"info": "The location search by lat\/long is limited, since queries with sql and with filters did not work."
+	},
+}
 ```
 
 #### /connections ####
@@ -141,6 +142,7 @@ Request Parameters:
 
 - from (required): Specifies the departure location of the connection (e.g. "Lausanne")
 - to (required): Specifies the arrival location of the connection (e.g. "Genève")
+  - BPUIC as from/to parameter should be prefered, since location look ups is taking the first entry, if there are many
 - date: Date of the connection, in the format YYYY-MM-DD (e.g. 2017-01-06)
 - time: Time of the connection, in the format hh:mm (e.g. 17:30)
 - isArrivalTime: defaults to 0, if set to 1 the passed date and time is the arrival time (e.g. 1)
@@ -170,628 +172,628 @@ Response Parameters:
 ##### Example response #####
 
 ```
-	"connections": {
-		"results": {
-			"trip-context": {
-				"situations": {
-					"pt-situations": [
-						{
-							"creation-time": "2023-04-19T17:38:21Z",
-							"version": "-1",
-							"source": [
-								{
-									"source-type": "other"
-								}
-							],
-							"unknown-reason": "unknown",
-							"priority": "-1",
-							"summary": "Aussteigeseite: Links"
-						},
-						{
-							"creation-time": "2023-04-19T17:38:21Z",
-							"version": "-1",
-							"source": {
-								"1": {
-									"source-type": "other"
-								}
-							},
-							"unknown-reason": "unknown",
-							"priority": "-1",
-							"summary": "Aussteigeseite: Links"
-						},
-						{
-							"creation-time": "2023-04-19T17:38:21Z",
-							"version": "-1",
-							"source": {
-								"2": {
-									"source-type": "other"
-								}
-							},
-							"unknown-reason": "unknown",
-							"priority": "-1",
-							"summary": "Aussteigeseite: Rechts"
-						},
-						{
-							"creation-time": "2023-04-19T17:38:21Z",
-							"version": "-1",
-							"source": {
-								"3": {
-									"source-type": "other"
-								}
-							},
-							"unknown-reason": "unknown",
-							"priority": "-1",
-							"summary": "Aussteigeseite: Links"
-						},
-						{
-							"creation-time": "2023-04-19T17:38:21Z",
-							"version": "-1",
-							"source": {
-								"4": {
-									"source-type": "other"
-								}
-							},
-							"unknown-reason": "unknown",
-							"priority": "-1",
-							"summary": "Aussteigeseite: Links"
-						},
-						{
-							"creation-time": "2023-04-19T17:38:21Z",
-							"version": "-1",
-							"source": {
-								"5": {
-									"source-type": "other"
-								}
-							},
-							"unknown-reason": "unknown",
-							"priority": "-1",
-							"summary": "Aussteigeseite: Links"
-						},
-						{
-							"creation-time": "2023-04-19T17:38:21Z",
-							"version": "-1",
-							"source": {
-								"6": {
-									"source-type": "other"
-								}
-							},
-							"unknown-reason": "unknown",
-							"priority": "-1",
-							"summary": "Aussteigeseite: Rechts"
-						},
-						{
-							"creation-time": "2023-04-19T17:38:21Z",
-							"version": "-1",
-							"source": {
-								"7": {
-									"source-type": "other"
-								}
-							},
-							"unknown-reason": "unknown",
-							"priority": "-1",
-							"summary": "Aussteigeseite: Links"
-						},
-						{
-							"creation-time": "2023-04-19T17:38:21Z",
-							"version": "-1",
-							"source": {
-								"8": {
-									"source-type": "other"
-								}
-							},
-							"unknown-reason": "unknown",
-							"priority": "-1",
-							"summary": "Aussteigeseite: Rechts"
-						},
-						{
-							"creation-time": "2023-04-19T17:38:21Z",
-							"version": "-1",
-							"source": {
-								"9": {
-									"source-type": "other"
-								}
-							},
-							"unknown-reason": "unknown",
-							"priority": "-1",
-							"summary": "Aussteigeseite: Links"
-						}
-					]
-				}
-			},
-			"trip-result": [
-				{
-					"result-id": "ID-5405FAB0-4CD3-4B07-B39F-CE3F0D90F0FA",
-					"trip": [
-						{
-							"trip-id": "ID-E4DE787D-F77E-47D6-8388-0036615DD3B3",
-							"duration": "PT1H19M",
-							"start-time": "2023-04-19T17:37:00Z",
-							"end-time": "2023-04-19T18:56:00Z",
-							"inter-changes": "1",
-							"distance": "118214",
-							"trip-leg": [
-								{
-									"leg-id": "1",
-									"timed-leg": [
-										{
-											"leg-board": [
-												{
-													"stop-point-reference": "8507000",
-													"stop-name": [
-														{
-															"text": [
-																"Bern"
-															],
-															"language": "de"
-														}
-													],
-													"planned-track": [
-														{
-															"text": {
-																"1": "4"
-															},
-															"language": "de"
-														}
-													],
-													"departure": [
-														{
-															"date-time": "2023-04-19T17:36:00Z",
-															"estimated-time": "2023-04-19T17:37:00Z"
-														}
-													],
-													"stops": "1"
-												}
-											],
-											"legalight": [
-												{
-													"stop-point-reference": "8500218",
-													"stop-name": {
-														"1": {
-															"text": {
-																"2": "Olten"
-															},
-															"language": "de"
-														}
-													},
-													"planned-track": {
-														"1": {
-															"text": {
-																"3": "7"
-															},
-															"language": "de"
-														}
-													},
-													"service-arrival": [
-														{
-															"date-time": "2023-04-19T18:03:00Z",
-															"estimated-time": "2023-04-19T18:03:00Z"
-														}
-													],
-													"stops": "2"
-												}
-											],
-											"service": [
-												{
-													"operating-date": "2023-04-19",
-													"journey-reference": "ojp:91061:A:H:j23:226:1082",
-													"line-reference": "ojp:91061:A:H",
-													"direction": "outward",
-													"mode": [
-														{
-															"pt-mode": "rail",
-															"sub-mode": "interregionalRail",
-															"name": [
-																{
-																	"text": "Zug",
-																	"language": "de"
-																}
-															]
-														}
-													],
-													"published-line-name": [
-														{
-															"text": {
-																"4": "IC61"
-															},
-															"language": "de"
-														}
-													],
-													"operation-reference": "ojp:11",
-													"attribute": [
-														{
-															"text": [
-																{
-																	"text": "Businesszone in 1. Klasse",
-																	"language": "de"
-																}
-															],
-															"code": "A__BZ"
-														},
-														{
-															"text": {
-																"1": {
-																	"text": "Ruhezone in 1. Klasse",
-																	"language": "de"
-																}
-															},
-															"code": "A__RZ"
-														},
-														{
-															"text": {
-																"2": {
-																	"text": "Gratis-Internet mit der App SBB FreeSurf",
-																	"language": "de"
-																}
-															},
-															"code": "A__FS"
-														},
-														{
-															"text": {
-																"3": {
-																	"text": "Restaurant",
-																	"language": "de"
-																}
-															},
-															"code": "A__WR"
-														},
-														{
-															"text": {
-																"4": {
-																	"text": "Platzreservierung m\u00f6glich",
-																	"language": "de"
-																}
-															},
-															"code": "A___R"
-														},
-														{
-															"text": {
-																"5": {
-																	"text": "Familienwagen mit Spielplatz",
-																	"language": "de"
-																}
-															},
-															"code": "A__FA"
-														},
-														{
-															"text": {
-																"6": {
-																	"text": "Aussteigeseite: Links",
-																	"language": "de"
-																}
-															},
-															"code": "ojp91061AH_InfoCall226_111055_1"
-														}
-													],
-													"origin-text": [
-														{
-															"language": "de"
-														}
-													],
-													"destination-stop-reference": "8500010",
-													"destination-text": [
-														{
-															"text": {
-																"13": "Basel SBB"
-															},
-															"language": "de"
-														}
-													]
-												}
-											],
-											"track": [
-												{
-													"track-section": [
-														{
-															"track-start": [
-																{
-																	"stop-point-reference": "8507000",
-																	"location-name": [
-																		{
-																			"text": "Bern",
-																			"language": "de"
-																		}
-																	]
-																}
-															],
-															"track-end": [
-																{
-																	"stop-point-reference": "8500218",
-																	"location-name": {
-																		"1": {
-																			"text": "Olten",
-																			"language": "de"
-																		}
-																	}
-																}
-															],
-															"duration": "PT27M",
-															"length": "63692"
-														}
-													]
-												}
-											]
-										}
-									]
-								},
-								{
-									"leg-id": "2",
-									"timed-leg": {
-										"1": {
-											"leg-board": {
-												"1": {
-													"stop-point-reference": "8500218",
-													"stop-name": {
-														"2": {
-															"text": {
-																"14": "Olten"
-															},
-															"language": "de"
-														}
-													},
-													"planned-track": {
-														"2": {
-															"text": {
-																"15": "7"
-															},
-															"language": "de"
-														}
-													},
-													"departure": {
-														"1": {
-															"date-time": "2023-04-19T18:20:00Z",
-															"estimated-time": "2023-04-19T18:20:00Z"
-														}
-													},
-													"stops": "1"
-												}
-											},
-											"intermetiates": [
-												{
-													"stop-point-reference": "8502113",
-													"stop-name": {
-														"3": {
-															"text": {
-																"16": "Aarau"
-															},
-															"language": "de"
-														}
-													},
-													"planned-track": {
-														"3": {
-															"text": {
-																"17": "3"
-															},
-															"language": "de"
-														}
-													},
-													"service-arrival": {
-														"1": {
-															"date-time": "2023-04-19T18:29:00Z",
-															"estimated-time": "2023-04-19T18:29:00Z"
-														}
-													},
-													"departure": {
-														"2": {
-															"date-time": "2023-04-19T18:31:00Z",
-															"estimated-time": "2023-04-19T18:31:00Z"
-														}
-													},
-													"stops": "2"
-												}
-											],
-											"legalight": {
-												"1": {
-													"stop-point-reference": "8503000",
-													"stop-name": {
-														"4": {
-															"text": {
-																"18": "Z\u00fcrich HB"
-															},
-															"language": "de"
-														}
-													},
-													"planned-track": {
-														"4": {
-															"text": {
-																"19": "18"
-															},
-															"language": "de"
-														}
-													},
-													"TRIAS:ESTIMATEDBAY": [
-														{
-															"text": {
-																"20": "9"
-															},
-															"language": "de"
-														}
-													],
-													"service-arrival": {
-														"2": {
-															"date-time": "2023-04-19T18:56:00Z",
-															"estimated-time": "2023-04-19T18:56:00Z"
-														}
-													},
-													"stops": "3"
-												}
-											},
-											"service": {
-												"1": {
-													"operating-date": "2023-04-19",
-													"journey-reference": "ojp:91005:A:H:j23:729:535",
-													"line-reference": "ojp:91005:A:H",
-													"direction": "outward",
-													"mode": {
-														"1": {
-															"pt-mode": "rail",
-															"sub-mode": "interregionalRail",
-															"name": {
-																"1": {
-																	"text": "Zug",
-																	"language": "de"
-																}
-															}
-														}
-													},
-													"published-line-name": {
-														"1": {
-															"text": {
-																"21": "IC5"
-															},
-															"language": "de"
-														}
-													},
-													"operation-reference": "ojp:11",
-													"attribute": {
-														"7": {
-															"text": {
-																"7": {
-																	"text": "Platzreservierung m\u00f6glich",
-																	"language": "de"
-																}
-															},
-															"code": "A___R"
-														},
-														"8": {
-															"text": {
-																"8": {
-																	"text": "VELOS: Reservierung obligatorisch",
-																	"language": "de"
-																}
-															},
-															"code": "A__VR"
-														},
-														"9": {
-															"text": {
-																"9": {
-																	"text": "Businesszone in 1. Klasse",
-																	"language": "de"
-																}
-															},
-															"code": "A__BZ"
-														},
-														"10": {
-															"text": {
-																"10": {
-																	"text": "Gratis-Internet mit der App SBB FreeSurf",
-																	"language": "de"
-																}
-															},
-															"code": "A__FS"
-														},
-														"11": {
-															"text": {
-																"11": {
-																	"text": "Familienzone ohne Spielplatz",
-																	"language": "de"
-																}
-															},
-															"code": "A__FZ"
-														},
-														"12": {
-															"text": {
-																"12": {
-																	"text": "Ruhezone in 1. Klasse",
-																	"language": "de"
-																}
-															},
-															"code": "A__RZ"
-														},
-														"13": {
-															"text": {
-																"13": {
-																	"text": "Neigezug",
-																	"language": "de"
-																}
-															},
-															"code": "A__TT"
-														},
-														"14": {
-															"text": {
-																"14": {
-																	"text": "Restaurant",
-																	"language": "de"
-																}
-															},
-															"code": "A__WR"
-														},
-														"15": {
-															"text": {
-																"15": {
-																	"text": "Aussteigeseite: Links",
-																	"language": "de"
-																}
-															},
-															"code": "ojp91005AH_InfoCall729_106652_1"
-														},
-														"16": {
-															"text": {
-																"16": {
-																	"text": "Aussteigeseite: Rechts",
-																	"language": "de"
-																}
-															},
-															"code": "ojp91005AH_InfoCall729_108276_1"
-														}
-													},
-													"origin-text": {
-														"1": {
-															"language": "de"
-														}
-													},
-													"destination-stop-reference": "8503000",
-													"destination-text": {
-														"1": {
-															"text": {
-																"33": "Z\u00fcrich HB"
-															},
-															"language": "de"
-														}
-													}
-												}
-											},
-											"track": {
-												"1": {
-													"track-section": {
-														"1": {
-															"track-start": {
-																"1": {
-																	"stop-point-reference": "8500218",
-																	"location-name": {
-																		"2": {
-																			"text": "Olten",
-																			"language": "de"
-																		}
-																	}
-																}
-															},
-															"track-end": {
-																"1": {
-																	"stop-point-reference": "8503000",
-																	"location-name": {
-																		"3": {
-																			"text": "Z\u00fcrich HB",
-																			"language": "de"
-																		}
-																	}
-																}
-															},
-															"duration": "PT36M",
-															"length": "54522"
-														}
-													}
-												}
-											}
-										}
-									}
-								}
-							]
-						}
-					]
-				},				
-			]
-		}
-	}
+"connections": {
+  "results": {
+    "trip-context": {
+      "situations": {
+        "pt-situations": [
+          {
+            "creation-time": "2023-04-19T17:38:21Z",
+            "version": "-1",
+            "source": [
+              {
+                "source-type": "other"
+              }
+            ],
+            "unknown-reason": "unknown",
+            "priority": "-1",
+            "summary": "Aussteigeseite: Links"
+          },
+          {
+            "creation-time": "2023-04-19T17:38:21Z",
+            "version": "-1",
+            "source": {
+              "1": {
+                "source-type": "other"
+              }
+            },
+            "unknown-reason": "unknown",
+            "priority": "-1",
+            "summary": "Aussteigeseite: Links"
+          },
+          {
+            "creation-time": "2023-04-19T17:38:21Z",
+            "version": "-1",
+            "source": {
+              "2": {
+                "source-type": "other"
+              }
+            },
+            "unknown-reason": "unknown",
+            "priority": "-1",
+            "summary": "Aussteigeseite: Rechts"
+          },
+          {
+            "creation-time": "2023-04-19T17:38:21Z",
+            "version": "-1",
+            "source": {
+              "3": {
+                "source-type": "other"
+              }
+            },
+            "unknown-reason": "unknown",
+            "priority": "-1",
+            "summary": "Aussteigeseite: Links"
+          },
+          {
+            "creation-time": "2023-04-19T17:38:21Z",
+            "version": "-1",
+            "source": {
+              "4": {
+                "source-type": "other"
+              }
+            },
+            "unknown-reason": "unknown",
+            "priority": "-1",
+            "summary": "Aussteigeseite: Links"
+          },
+          {
+            "creation-time": "2023-04-19T17:38:21Z",
+            "version": "-1",
+            "source": {
+              "5": {
+                "source-type": "other"
+              }
+            },
+            "unknown-reason": "unknown",
+            "priority": "-1",
+            "summary": "Aussteigeseite: Links"
+          },
+          {
+            "creation-time": "2023-04-19T17:38:21Z",
+            "version": "-1",
+            "source": {
+              "6": {
+                "source-type": "other"
+              }
+            },
+            "unknown-reason": "unknown",
+            "priority": "-1",
+            "summary": "Aussteigeseite: Rechts"
+          },
+          {
+            "creation-time": "2023-04-19T17:38:21Z",
+            "version": "-1",
+            "source": {
+              "7": {
+                "source-type": "other"
+              }
+            },
+            "unknown-reason": "unknown",
+            "priority": "-1",
+            "summary": "Aussteigeseite: Links"
+          },
+          {
+            "creation-time": "2023-04-19T17:38:21Z",
+            "version": "-1",
+            "source": {
+              "8": {
+                "source-type": "other"
+              }
+            },
+            "unknown-reason": "unknown",
+            "priority": "-1",
+            "summary": "Aussteigeseite: Rechts"
+          },
+          {
+            "creation-time": "2023-04-19T17:38:21Z",
+            "version": "-1",
+            "source": {
+              "9": {
+                "source-type": "other"
+              }
+            },
+            "unknown-reason": "unknown",
+            "priority": "-1",
+            "summary": "Aussteigeseite: Links"
+          }
+        ]
+      }
+    },
+    "trip-result": [
+      {
+        "result-id": "ID-5405FAB0-4CD3-4B07-B39F-CE3F0D90F0FA",
+        "trip": [
+          {
+            "trip-id": "ID-E4DE787D-F77E-47D6-8388-0036615DD3B3",
+            "duration": "PT1H19M",
+            "start-time": "2023-04-19T17:37:00Z",
+            "end-time": "2023-04-19T18:56:00Z",
+            "inter-changes": "1",
+            "distance": "118214",
+            "trip-leg": [
+              {
+                "leg-id": "1",
+                "timed-leg": [
+                  {
+                    "leg-board": [
+                      {
+                        "stop-point-reference": "8507000",
+                        "stop-name": [
+                          {
+                            "text": [
+                              "Bern"
+                            ],
+                            "language": "de"
+                          }
+                        ],
+                        "planned-track": [
+                          {
+                            "text": {
+                              "1": "4"
+                            },
+                            "language": "de"
+                          }
+                        ],
+                        "departure": [
+                          {
+                            "date-time": "2023-04-19T17:36:00Z",
+                            "estimated-time": "2023-04-19T17:37:00Z"
+                          }
+                        ],
+                        "stops": "1"
+                      }
+                    ],
+                    "legalight": [
+                      {
+                        "stop-point-reference": "8500218",
+                        "stop-name": {
+                          "1": {
+                            "text": {
+                              "2": "Olten"
+                            },
+                            "language": "de"
+                          }
+                        },
+                        "planned-track": {
+                          "1": {
+                            "text": {
+                              "3": "7"
+                            },
+                            "language": "de"
+                          }
+                        },
+                        "service-arrival": [
+                          {
+                            "date-time": "2023-04-19T18:03:00Z",
+                            "estimated-time": "2023-04-19T18:03:00Z"
+                          }
+                        ],
+                        "stops": "2"
+                      }
+                    ],
+                    "service": [
+                      {
+                        "operating-date": "2023-04-19",
+                        "journey-reference": "ojp:91061:A:H:j23:226:1082",
+                        "line-reference": "ojp:91061:A:H",
+                        "direction": "outward",
+                        "mode": [
+                          {
+                            "pt-mode": "rail",
+                            "sub-mode": "interregionalRail",
+                            "name": [
+                              {
+                                "text": "Zug",
+                                "language": "de"
+                              }
+                            ]
+                          }
+                        ],
+                        "published-line-name": [
+                          {
+                            "text": {
+                              "4": "IC61"
+                            },
+                            "language": "de"
+                          }
+                        ],
+                        "operation-reference": "ojp:11",
+                        "attribute": [
+                          {
+                            "text": [
+                              {
+                                "text": "Businesszone in 1. Klasse",
+                                "language": "de"
+                              }
+                            ],
+                            "code": "A__BZ"
+                          },
+                          {
+                            "text": {
+                              "1": {
+                                "text": "Ruhezone in 1. Klasse",
+                                "language": "de"
+                              }
+                            },
+                            "code": "A__RZ"
+                          },
+                          {
+                            "text": {
+                              "2": {
+                                "text": "Gratis-Internet mit der App SBB FreeSurf",
+                                "language": "de"
+                              }
+                            },
+                            "code": "A__FS"
+                          },
+                          {
+                            "text": {
+                              "3": {
+                                "text": "Restaurant",
+                                "language": "de"
+                              }
+                            },
+                            "code": "A__WR"
+                          },
+                          {
+                            "text": {
+                              "4": {
+                                "text": "Platzreservierung m\u00f6glich",
+                                "language": "de"
+                              }
+                            },
+                            "code": "A___R"
+                          },
+                          {
+                            "text": {
+                              "5": {
+                                "text": "Familienwagen mit Spielplatz",
+                                "language": "de"
+                              }
+                            },
+                            "code": "A__FA"
+                          },
+                          {
+                            "text": {
+                              "6": {
+                                "text": "Aussteigeseite: Links",
+                                "language": "de"
+                              }
+                            },
+                            "code": "ojp91061AH_InfoCall226_111055_1"
+                          }
+                        ],
+                        "origin-text": [
+                          {
+                            "language": "de"
+                          }
+                        ],
+                        "destination-stop-reference": "8500010",
+                        "destination-text": [
+                          {
+                            "text": {
+                              "13": "Basel SBB"
+                            },
+                            "language": "de"
+                          }
+                        ]
+                      }
+                    ],
+                    "track": [
+                      {
+                        "track-section": [
+                          {
+                            "track-start": [
+                              {
+                                "stop-point-reference": "8507000",
+                                "location-name": [
+                                  {
+                                    "text": "Bern",
+                                    "language": "de"
+                                  }
+                                ]
+                              }
+                            ],
+                            "track-end": [
+                              {
+                                "stop-point-reference": "8500218",
+                                "location-name": {
+                                  "1": {
+                                    "text": "Olten",
+                                    "language": "de"
+                                  }
+                                }
+                              }
+                            ],
+                            "duration": "PT27M",
+                            "length": "63692"
+                          }
+                        ]
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "leg-id": "2",
+                "timed-leg": {
+                  "1": {
+                    "leg-board": {
+                      "1": {
+                        "stop-point-reference": "8500218",
+                        "stop-name": {
+                          "2": {
+                            "text": {
+                              "14": "Olten"
+                            },
+                            "language": "de"
+                          }
+                        },
+                        "planned-track": {
+                          "2": {
+                            "text": {
+                              "15": "7"
+                            },
+                            "language": "de"
+                          }
+                        },
+                        "departure": {
+                          "1": {
+                            "date-time": "2023-04-19T18:20:00Z",
+                            "estimated-time": "2023-04-19T18:20:00Z"
+                          }
+                        },
+                        "stops": "1"
+                      }
+                    },
+                    "intermetiates": [
+                      {
+                        "stop-point-reference": "8502113",
+                        "stop-name": {
+                          "3": {
+                            "text": {
+                              "16": "Aarau"
+                            },
+                            "language": "de"
+                          }
+                        },
+                        "planned-track": {
+                          "3": {
+                            "text": {
+                              "17": "3"
+                            },
+                            "language": "de"
+                          }
+                        },
+                        "service-arrival": {
+                          "1": {
+                            "date-time": "2023-04-19T18:29:00Z",
+                            "estimated-time": "2023-04-19T18:29:00Z"
+                          }
+                        },
+                        "departure": {
+                          "2": {
+                            "date-time": "2023-04-19T18:31:00Z",
+                            "estimated-time": "2023-04-19T18:31:00Z"
+                          }
+                        },
+                        "stops": "2"
+                      }
+                    ],
+                    "legalight": {
+                      "1": {
+                        "stop-point-reference": "8503000",
+                        "stop-name": {
+                          "4": {
+                            "text": {
+                              "18": "Z\u00fcrich HB"
+                            },
+                            "language": "de"
+                          }
+                        },
+                        "planned-track": {
+                          "4": {
+                            "text": {
+                              "19": "18"
+                            },
+                            "language": "de"
+                          }
+                        },
+                        "TRIAS:ESTIMATEDBAY": [
+                          {
+                            "text": {
+                              "20": "9"
+                            },
+                            "language": "de"
+                          }
+                        ],
+                        "service-arrival": {
+                          "2": {
+                            "date-time": "2023-04-19T18:56:00Z",
+                            "estimated-time": "2023-04-19T18:56:00Z"
+                          }
+                        },
+                        "stops": "3"
+                      }
+                    },
+                    "service": {
+                      "1": {
+                        "operating-date": "2023-04-19",
+                        "journey-reference": "ojp:91005:A:H:j23:729:535",
+                        "line-reference": "ojp:91005:A:H",
+                        "direction": "outward",
+                        "mode": {
+                          "1": {
+                            "pt-mode": "rail",
+                            "sub-mode": "interregionalRail",
+                            "name": {
+                              "1": {
+                                "text": "Zug",
+                                "language": "de"
+                              }
+                            }
+                          }
+                        },
+                        "published-line-name": {
+                          "1": {
+                            "text": {
+                              "21": "IC5"
+                            },
+                            "language": "de"
+                          }
+                        },
+                        "operation-reference": "ojp:11",
+                        "attribute": {
+                          "7": {
+                            "text": {
+                              "7": {
+                                "text": "Platzreservierung m\u00f6glich",
+                                "language": "de"
+                              }
+                            },
+                            "code": "A___R"
+                          },
+                          "8": {
+                            "text": {
+                              "8": {
+                                "text": "VELOS: Reservierung obligatorisch",
+                                "language": "de"
+                              }
+                            },
+                            "code": "A__VR"
+                          },
+                          "9": {
+                            "text": {
+                              "9": {
+                                "text": "Businesszone in 1. Klasse",
+                                "language": "de"
+                              }
+                            },
+                            "code": "A__BZ"
+                          },
+                          "10": {
+                            "text": {
+                              "10": {
+                                "text": "Gratis-Internet mit der App SBB FreeSurf",
+                                "language": "de"
+                              }
+                            },
+                            "code": "A__FS"
+                          },
+                          "11": {
+                            "text": {
+                              "11": {
+                                "text": "Familienzone ohne Spielplatz",
+                                "language": "de"
+                              }
+                            },
+                            "code": "A__FZ"
+                          },
+                          "12": {
+                            "text": {
+                              "12": {
+                                "text": "Ruhezone in 1. Klasse",
+                                "language": "de"
+                              }
+                            },
+                            "code": "A__RZ"
+                          },
+                          "13": {
+                            "text": {
+                              "13": {
+                                "text": "Neigezug",
+                                "language": "de"
+                              }
+                            },
+                            "code": "A__TT"
+                          },
+                          "14": {
+                            "text": {
+                              "14": {
+                                "text": "Restaurant",
+                                "language": "de"
+                              }
+                            },
+                            "code": "A__WR"
+                          },
+                          "15": {
+                            "text": {
+                              "15": {
+                                "text": "Aussteigeseite: Links",
+                                "language": "de"
+                              }
+                            },
+                            "code": "ojp91005AH_InfoCall729_106652_1"
+                          },
+                          "16": {
+                            "text": {
+                              "16": {
+                                "text": "Aussteigeseite: Rechts",
+                                "language": "de"
+                              }
+                            },
+                            "code": "ojp91005AH_InfoCall729_108276_1"
+                          }
+                        },
+                        "origin-text": {
+                          "1": {
+                            "language": "de"
+                          }
+                        },
+                        "destination-stop-reference": "8503000",
+                        "destination-text": {
+                          "1": {
+                            "text": {
+                              "33": "Z\u00fcrich HB"
+                            },
+                            "language": "de"
+                          }
+                        }
+                      }
+                    },
+                    "track": {
+                      "1": {
+                        "track-section": {
+                          "1": {
+                            "track-start": {
+                              "1": {
+                                "stop-point-reference": "8500218",
+                                "location-name": {
+                                  "2": {
+                                    "text": "Olten",
+                                    "language": "de"
+                                  }
+                                }
+                              }
+                            },
+                            "track-end": {
+                              "1": {
+                                "stop-point-reference": "8503000",
+                                "location-name": {
+                                  "3": {
+                                    "text": "Z\u00fcrich HB",
+                                    "language": "de"
+                                  }
+                                }
+                              }
+                            },
+                            "duration": "PT36M",
+                            "length": "54522"
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            ]
+          }
+        ]
+      },				
+    ]
+  }
+}
 ```
 
 #### /stationboard ####
@@ -808,7 +810,8 @@ Request Parameters:
 
 Important:
 
-- station: Be aware, that ODPCH does not use importance of station. Therefore you can get anything. E.g. Zürich will not get you Zürich HB.
+- station: Be aware, that ODPCH does not use importance of station. Therefore you can get anything. e.g. Zürich will not get you Zürich HB.
+  - if you don't find any results it's advantageous to download the [https://opentransportdata.swiss/de/dataset/didok/resource/c76dd45b-260b-4602-b946-f80696c2414b](Verkehrspunktelemente_full.csv) and look for a matching BPUIC. For example the BPUIC 8515163 (Zürich HB Museumstrasse) delivers no results, but the general Zürich HB BPUIC 8503000 does.
 - transportations: not supported
 
 Response Parameters:
@@ -827,197 +830,197 @@ Response Parameters:
 ##### Example response #####
 
 ```
-	"stationboard": {
-		"info": "Stationboard station location search contains more than one result. Number of results: 100. The first appearing station with the BPUIC \"8508183\" was taken, with the name \"Madiswil\". If you did not found your desired station, please search more specific like \"?station=Bern Wankdorf Bahnhof\".",
-		"results": [
-			{
-				"result-id": "ID-42F211F6-9EF9-490C-91A6-A8522570B500",
-				"stop-event": [
-					{
-						"call": [
-							{
-								"call-stop": [
-									{
-										"stop-point-reference": "8508183",
-										"stop-name": [
-											{
-												"text": "Madiswil",
-												"language": "de"
-											}
-										],
-										"planned-track": [
-											{
-												"text": "2",
-												"language": "de"
-											}
-										],
-										"departure": [
-											{
-												"date-time": "2023-04-19T12:57:00Z",
-												"TRIAS:ESTIMATEDTIME": "2023-04-19T12:59:00Z"
-											}
-										],
-										"stops": "5"
-									}
-								]
-							}
-						],
-						"service": [
-							{
-								"operating-date": "2023-04-19",
-								"journey-reference": "ojp:91007:D:R:j23:141:21761",
-								"line-reference": "ojp:91007:D:R",
-								"direction": "return",
-								"mode": [
-									{
-										"pt-mode": "rail",
-										"sub-mode": "regionalRail",
-										"name": [
-											{
-												"text": "Zug",
-												"language": "de"
-											}
-										]
-									}
-								],
-								"published-line-name": [
-									{
-										"text": [
-											"S7"
-										],
-										"language": "de"
-									}
-								],
-								"operation-reference": "ojp:33",
-								"attribute": [
-									{
-										"text": [
-											{
-												"text": "Aussteigeseite: Rechts",
-												"language": "de"
-											}
-										],
-										"code": "ojp91007DR_InfoCall141_111793_1"
-									}
-								],
-								"origin-stop-reference": "8508187",
-								"origin-text": [
-									{
-										"text": {
-											"2": "Huttwil"
-										},
-										"language": "de"
-									}
-								],
-								"destination-stop-reference": "8508100",
-								"destination-text": [
-									{
-										"text": {
-											"3": "Langenthal"
-										},
-										"language": "de"
-									}
-								]
-							}
-						]
-					}
-				]
-			},
-			{
-				"result-id": "ID-4EE60CE3-C514-41EE-BABC-833ECE5FDBA7",
-				"stop-event": {
-					"1": {
-						"call": {
-							"1": {
-								"call-stop": {
-									"1": {
-										"stop-point-reference": "8508183",
-										"stop-name": {
-											"1": {
-												"text": "Madiswil",
-												"language": "de"
-											}
-										},
-										"planned-track": {
-											"1": {
-												"text": "3",
-												"language": "de"
-											}
-										},
-										"departure": {
-											"1": {
-												"date-time": "2023-04-19T12:59:00Z",
-												"TRIAS:ESTIMATEDTIME": "2023-04-19T12:59:00Z"
-											}
-										},
-										"stops": "5"
-									}
-								}
-							}
-						},
-						"service": {
-							"1": {
-								"operating-date": "2023-04-19",
-								"journey-reference": "ojp:91007:D:H:j23:41:21754",
-								"line-reference": "ojp:91007:D:H",
-								"direction": "outward",
-								"mode": {
-									"1": {
-										"pt-mode": "rail",
-										"sub-mode": "regionalRail",
-										"name": {
-											"1": {
-												"text": "Zug",
-												"language": "de"
-											}
-										}
-									}
-								},
-								"published-line-name": {
-									"1": {
-										"text": {
-											"4": "S7"
-										},
-										"language": "de"
-									}
-								},
-								"operation-reference": "ojp:33",
-								"attribute": {
-									"1": {
-										"text": {
-											"1": {
-												"text": "Aussteigeseite: Rechts",
-												"language": "de"
-											}
-										},
-										"code": "ojp91007DH_InfoCall41_111793_1"
-									}
-								},
-								"origin-stop-reference": "8508100",
-								"origin-text": {
-									"1": {
-										"text": {
-											"6": "Langenthal"
-										},
-										"language": "de"
-									}
-								},
-								"destination-stop-reference": "8508187",
-								"destination-text": {
-									"1": {
-										"text": {
-											"7": "Huttwil"
-										},
-										"language": "de"
-									}
-								}
-							}
-						}
-					}
-				}
-			},
-		]
-	}
+"stationboard": {
+  "info": "Stationboard station location search contains more than one result. Number of results: 100. The first appearing station with the BPUIC \"8508183\" was taken, with the name \"Madiswil\". If you did not found your desired station, please search more specific like \"?station=Bern Wankdorf Bahnhof\".",
+  "results": [
+    {
+      "result-id": "ID-42F211F6-9EF9-490C-91A6-A8522570B500",
+      "stop-event": [
+        {
+          "call": [
+            {
+              "call-stop": [
+                {
+                  "stop-point-reference": "8508183",
+                  "stop-name": [
+                    {
+                      "text": "Madiswil",
+                      "language": "de"
+                    }
+                  ],
+                  "planned-track": [
+                    {
+                      "text": "2",
+                      "language": "de"
+                    }
+                  ],
+                  "departure": [
+                    {
+                      "date-time": "2023-04-19T12:57:00Z",
+                      "TRIAS:ESTIMATEDTIME": "2023-04-19T12:59:00Z"
+                    }
+                  ],
+                  "stops": "5"
+                }
+              ]
+            }
+          ],
+          "service": [
+            {
+              "operating-date": "2023-04-19",
+              "journey-reference": "ojp:91007:D:R:j23:141:21761",
+              "line-reference": "ojp:91007:D:R",
+              "direction": "return",
+              "mode": [
+                {
+                  "pt-mode": "rail",
+                  "sub-mode": "regionalRail",
+                  "name": [
+                    {
+                      "text": "Zug",
+                      "language": "de"
+                    }
+                  ]
+                }
+              ],
+              "published-line-name": [
+                {
+                  "text": [
+                    "S7"
+                  ],
+                  "language": "de"
+                }
+              ],
+              "operation-reference": "ojp:33",
+              "attribute": [
+                {
+                  "text": [
+                    {
+                      "text": "Aussteigeseite: Rechts",
+                      "language": "de"
+                    }
+                  ],
+                  "code": "ojp91007DR_InfoCall141_111793_1"
+                }
+              ],
+              "origin-stop-reference": "8508187",
+              "origin-text": [
+                {
+                  "text": {
+                    "2": "Huttwil"
+                  },
+                  "language": "de"
+                }
+              ],
+              "destination-stop-reference": "8508100",
+              "destination-text": [
+                {
+                  "text": {
+                    "3": "Langenthal"
+                  },
+                  "language": "de"
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "result-id": "ID-4EE60CE3-C514-41EE-BABC-833ECE5FDBA7",
+      "stop-event": {
+        "1": {
+          "call": {
+            "1": {
+              "call-stop": {
+                "1": {
+                  "stop-point-reference": "8508183",
+                  "stop-name": {
+                    "1": {
+                      "text": "Madiswil",
+                      "language": "de"
+                    }
+                  },
+                  "planned-track": {
+                    "1": {
+                      "text": "3",
+                      "language": "de"
+                    }
+                  },
+                  "departure": {
+                    "1": {
+                      "date-time": "2023-04-19T12:59:00Z",
+                      "TRIAS:ESTIMATEDTIME": "2023-04-19T12:59:00Z"
+                    }
+                  },
+                  "stops": "5"
+                }
+              }
+            }
+          },
+          "service": {
+            "1": {
+              "operating-date": "2023-04-19",
+              "journey-reference": "ojp:91007:D:H:j23:41:21754",
+              "line-reference": "ojp:91007:D:H",
+              "direction": "outward",
+              "mode": {
+                "1": {
+                  "pt-mode": "rail",
+                  "sub-mode": "regionalRail",
+                  "name": {
+                    "1": {
+                      "text": "Zug",
+                      "language": "de"
+                    }
+                  }
+                }
+              },
+              "published-line-name": {
+                "1": {
+                  "text": {
+                    "4": "S7"
+                  },
+                  "language": "de"
+                }
+              },
+              "operation-reference": "ojp:33",
+              "attribute": {
+                "1": {
+                  "text": {
+                    "1": {
+                      "text": "Aussteigeseite: Rechts",
+                      "language": "de"
+                    }
+                  },
+                  "code": "ojp91007DH_InfoCall41_111793_1"
+                }
+              },
+              "origin-stop-reference": "8508100",
+              "origin-text": {
+                "1": {
+                  "text": {
+                    "6": "Langenthal"
+                  },
+                  "language": "de"
+                }
+              },
+              "destination-stop-reference": "8508187",
+              "destination-text": {
+                "1": {
+                  "text": {
+                    "7": "Huttwil"
+                  },
+                  "language": "de"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+  ]
+}
 ```
 
 ### API Objects ###
