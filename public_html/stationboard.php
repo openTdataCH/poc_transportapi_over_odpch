@@ -79,7 +79,7 @@ function getStationBoard($id, $limit, $dateTime, $isDeparture, $queryInfo = null
 
     if (isset($xmlArray['TRIAS:TRIAS']['TRIAS:SERVICEDELIVERY']["TRIAS:DELIVERYPAYLOAD"]["TRIAS:STOPEVENTRESPONSE"]["TRIAS:ERRORMESSAGE"])) {
         $apiError = $xmlArray['TRIAS:TRIAS']['TRIAS:SERVICEDELIVERY']["TRIAS:DELIVERYPAYLOAD"]["TRIAS:STOPEVENTRESPONSE"]["TRIAS:ERRORMESSAGE"]["TRIAS:TEXT"]["TRIAS:TEXT"];
-        echo 'The API returned an error: ' . $apiError . '. Maybe the provided date is in the past or too far in the future.';
+        echo 'The API returned an error: ' . $apiError . '. Maybe the station name is not specific enough (use e.g. /locations?query=Basel to find a more specific station) or the provided date is in the past or too far in the future.';
         return false;
     }
 
