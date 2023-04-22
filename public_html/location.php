@@ -95,6 +95,7 @@ function getLocation($ckanApiKey, $ckanApiUrl, $station) {
 	}
 
 	$queryId = $didok->result->resources[3]->id;
+	$station = urlencode($station);
 	$query = $ckanApiUrl . "/datastore_search?resource_id=" . $queryId . '&q=' . $station;
 
 	$data = doCurl($query, $ckanApiKey);
