@@ -187,41 +187,26 @@ function getLocationCoordinates($ckanApiKey, $ckanApiUrl, $x, $y) {
 
 	$queryId = $didok->result->resources[3]->id;
 
-    // TODO: try fix have datastore sql working
 	$lat = abs($x);
-	$latPlus = $lat + 0.09;
-	$latMinus = $lat - 0.09;
+	$latPlus = $lat + 0.03;
+	$latMinus = $lat - 0.03;
 	$long = abs($y);
-	$longPlus = $long + 0.09;
-	$longMinus = $long - 0.09;
-    // get with sql -> fails
-	//$query = 'SELECT * from "' . $queryId . '" WHERE `E_WGS84` < ' . $latPlus . ' AND `E_WGS84` > ' . $latMinus . ' AND `N_WGS84` < ' . $longPlus . ' AND `N_WGS84` > ' . $longMinus . '';
-	//$urlQuery = $ckanApiUrl . "/datastore_search_sql?sql=" . $query;
-    
-
-    // get with filters -> fails
-    //$queryFilters = '{' . '"E_WGS84": ["' . $latMinus . '", "' . $latPlus . '"]}';
-	//$urlQuery = $ckanApiUrl . "/datastore_search?resource_id=" . $queryId . "&filters=" . $queryFilters;
-
-    // get all
-    // number of lines in dienststelle_full.csv: 148555
-    $urlQuery = $ckanApiUrl . "/datastore_search?resource_id=" . $queryId . "&limit=4000";
+	$longPlus = $long + 0.03;
+	$longMinus = $long - 0.03;
+	$query = urlencode('SELECT * from "' . $queryId . '" WHERE "E_WGS84" < ' . $latPlus . ' AND "E_WGS84" > ' . $latMinus . ' AND "N_WGS84" < ' . $longPlus . ' AND "N_WGS84" > ' . $longMinus);
+	$urlQuery = $ckanApiUrl . "/datastore_search_sql?sql=" . $query;
 
 	$data = doCurl($urlQuery, $ckanApiKey);
 	if (!checkDatastoreSearchResult($data)) {
 		return [];
 	}
-	
-    // following would be unnecessary if datastore sql would work
-    $returnArray = [];
-    foreach ($data->result->records as $dataKey => $dataEntry) {
-        if ($dataEntry->E_WGS84 < $latPlus && $dataEntry->E_WGS84 > $latMinus && $dataEntry->N_WGS84 < $longPlus && $dataEntry->N_WGS84 > $longMinus) {
-            $returnArray[$dataKey] = $dataEntry;
-        }
+    $recordsArray = [];
+    if (isset($data->result->records)) {
+        $recordsArray = $data->result->records;
     }
 
     $locationReducedArray = [];
-	foreach ($returnArray as $recordKey => $record) {
+	foreach ($recordsArray as $recordKey => $record) {
 		$station = array();
 		$station['id'] = $record->BPUIC;
 		$station['sloid'] = $record->SLOID;
@@ -238,7 +223,6 @@ function getLocationCoordinates($ckanApiKey, $ckanApiUrl, $x, $y) {
 		];
         $station['distance'] = haversineGreatCircleDistance($x, $y, $record->N_WGS84, $record->E_WGS84);
 		$locationReducedArray[$recordKey] = $station;
-        $locationReducedArray[$recordKey]['info'] = 'The location search by lat/long is limited, since queries with sql and with filters did not work.';
 	}
 
 	setbuffer('getLocationCoordinates', $x . "---" . $y, $locationReducedArray); // buffering
