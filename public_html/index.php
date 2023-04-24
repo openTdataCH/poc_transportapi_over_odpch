@@ -48,6 +48,11 @@ foreach ($routes1 as $route) {
     }
 }
 
+if (count($routes) <= 0) {
+    echo 'Please provide a request parameter. There are locations, connections and stationboard available.';
+    exit;
+}
+
 $j = count($routes) - 1;
 
 // doing locations
