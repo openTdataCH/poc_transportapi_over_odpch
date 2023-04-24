@@ -22,7 +22,7 @@ The current implementation uses a standard API-key and is therefore limited. It 
 
 #### /locations ####
 
-> http://transport.gnostx.com/locations
+> http://example.com/locations
 
 Request Parameters:
 
@@ -45,8 +45,8 @@ Response Parameters:
 
 ##### Example requests #####
     
-    GET http://transport.gnostx.com/locations?query=Basel
-    GET http://transport.gnostx.com/locations?lat=47.451&long=8.061
+    GET http://example.com/locations?query=Basel
+    GET http://example.com/locations?lat=47.451&long=8.061
 
 ##### Example response #####
 
@@ -107,7 +107,7 @@ Response Parameters:
 
 #### /connections ####
 
-    http://transport.gnostx.com/connections
+    http://example.com/connections
 
 Request Parameters:
 
@@ -137,8 +137,8 @@ Response Parameters:
 
 ##### Example request #####
 
-    GET http://transport.gnostx.com/connections?from=8507000&to=8503000
-    GET http://transport.gnostx.com/connections?from=8507000&to=8503000&date=2016-12-12&time=20:00&isArrivalTime=1&limit=8
+    GET http://example.com/connections?from=8507000&to=8503000
+    GET http://example.com/connections?from=8507000&to=8503000&date=2016-12-12&time=20:00&isArrivalTime=1&limit=8
         
 ##### Example response #####
 
@@ -769,7 +769,7 @@ Response Parameters:
 
 #### /stationboard ####
 
-    http://transport.gnostx.com/stationboard
+    http://example.com/stationboard
     
 Request Parameters:
 
@@ -792,11 +792,11 @@ Response Parameters:
 
 ##### Example request #####
 
-    GET http://transport.gnostx.com/stationboard?id=8507000
-    GET http://transport.gnostx.com/stationboard?station=Wankdorf
-    GET http://transport.gnostx.com/stationboard?id=8503000&datetime=2016-12-12T22:00:00&type=arrival
-    GET http://transport.gnostx.com/stationboard?id=8503000&datetime=2016-12-12T22:00:00&type=departure
-    GET http://transport.gnostx.com/stationboard?id=8503000&datetime=2016-12-12T22:00:00&type=arrival&limit=3
+    GET http://example.com/stationboard?id=8507000
+    GET http://example.com/stationboard?station=Wankdorf
+    GET http://example.com/stationboard?id=8503000&datetime=2016-12-12T22:00:00&type=arrival
+    GET http://example.com/stationboard?id=8503000&datetime=2016-12-12T22:00:00&type=departure
+    GET http://example.com/stationboard?id=8503000&datetime=2016-12-12T22:00:00&type=arrival&limit=3
     
 ##### Example response #####
 
