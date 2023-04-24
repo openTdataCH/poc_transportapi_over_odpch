@@ -32,7 +32,6 @@ Request Parameters:
 
 Important:
 
-- lat/long queries: since it was not possible to implement sql or filter search, all possible results are queried with a limit of 4000 (the whole dienststelle_full. csv has at this moment (2023-04-22) 148555 entries). 4000 was the maximum results before there was a server timeout. Unfortunately queries with lat/long aren't functioning properly now therefore.
 - if you are looking for a BPUIC
 - type: not supported
 - transportations: not supported
@@ -42,7 +41,7 @@ Response Parameters:
 
 - list of locations 
 - Stations don't support score. Distance is only supported, when searched by geo coordinates.
-- lat, long search returns all in 0.09 distance
+- lat, long search returns all in 0.03 distance
 
 ##### Example requests #####
     
@@ -52,85 +51,57 @@ Response Parameters:
 ##### Example response #####
 
 ```
-"stations": {
-	"600": {
-		"id": 8515456,
-		"sloid": "ch:1:sloid:15456",
-		"name": "Neugut Ost bei DUE (Abzw)",
-		"coordinate": {
-			"type": "WGS84",
-			"latitude": 47.40445000022,
-			"longitude": 8.60479000204,
-			"IERS": 430.9
+{
+	"stations": [
+		{
+			"id": "8586887",
+			"sloid": "ch:1:sloid:86887",
+			"name": "28 PU  P. Glanzmann Zeihen",
+			"coordinate": {
+				"type": "WGS84",
+				"latitude": "47.47303319802",
+				"longitude": "8.08315157092",
+				"IERS": "447.8"
+			},
+			"distance": 5740984.154887024
 		},
-		"distance": 5656947.737761683,
-		"info": "The location search by lat\/long is limited, since queries with sql and with filters did not work."
-	},
-	"1058": {
-		"id": 8503200,
-		"sloid": "ch:1:sloid:3200",
-		"name": "Kilchberg",
-		"coordinate": {
-			"type": "WGS84",
-			"latitude": 47.32443156963,
-			"longitude": 8.54801640459,
-			"IERS": 424.1
+		{
+			"id": "8500977",
+			"sloid": "ch:1:sloid:977",
+			"name": "Densb\u00fcren, Gemeindehaus",
+			"coordinate": {
+				"type": "WGS84",
+				"latitude": "47.45585105687",
+				"longitude": "8.05192859512",
+				"IERS": "469"
+			},
+			"distance": 5741721.736311883
 		},
-		"distance": 5655013.104207889,
-		"info": "The location search by lat\/long is limited, since queries with sql and with filters did not work."
-	},
-	"1117": {
-		"id": 8591236,
-		"sloid": "ch:1:sloid:91236",
-		"name": "Z\u00fcrich, Krematorium Sihlfeld",
-		"coordinate": {
-			"type": "WGS84",
-			"latitude": 47.37780610449,
-			"longitude": 8.50787199573,
-			"IERS": 412
+		{
+			"id": "8500977",
+			"sloid": "ch:1:sloid:977",
+			"name": "Densb\u00fcren, Gemeindehaus",
+			"coordinate": {
+				"type": "WGS84",
+				"latitude": "47.45585105687",
+				"longitude": "8.05192859512",
+				"IERS": "469"
+			},
+			"distance": 5741721.736311883
 		},
-		"distance": 5660995.515985221,
-		"info": "The location search by lat\/long is limited, since queries with sql and with filters did not work."
-	},
-	"1118": {
-		"id": 8519512,
-		"sloid": "ch:1:sloid:19512",
-		"name": "Z\u00fcrich, Letzigrund (Vzw)",
-		"coordinate": {
-			"type": "WGS84",
-			"latitude": 47.38096082849,
-			"longitude": 8.50425362759,
-			"IERS": 410
-		},
-		"distance": 5661424.014328691,
-		"info": "The location search by lat\/long is limited, since queries with sql and with filters did not work."
-	},
-	"1119": {
-		"id": 8519512,
-		"sloid": "ch:1:sloid:19512",
-		"name": "Z\u00fcrich, Letzigrund (Vzw)",
-		"coordinate": {
-			"type": "WGS84",
-			"latitude": 47.38096082849,
-			"longitude": 8.50425362759,
-			"IERS": 410
-		},
-		"distance": 5661424.014328691,
-		"info": "The location search by lat\/long is limited, since queries with sql and with filters did not work."
-	},
-	"1298": {
-		"id": 8516737,
-		"sloid": "ch:1:sloid:16737",
-		"name": "Z\u00fcrich Weinbergtunnel",
-		"coordinate": {
-			"type": "WGS84",
-			"latitude": 47.38993785184,
-			"longitude": 8.53786514796,
-			"IERS": 451
-		},
-		"distance": 5660000.742642435,
-		"info": "The location search by lat\/long is limited, since queries with sql and with filters did not work."
-	},
+		{
+			"id": "8500687",
+			"sloid": "ch:1:sloid:687",
+			"name": "K\u00fcttigen, Benken-Klus",
+			"coordinate": {
+				"type": "WGS84",
+				"latitude": "47.42307877442",
+				"longitude": "8.03759598776",
+				"IERS": "462"
+			},
+			"distance": 5740407.65346529
+		}
+	]
 }
 ```
 
